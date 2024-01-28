@@ -39,8 +39,11 @@ app.post('/api/auth/signup', async (req, res) => {
 
     try {
         // 회원가입 로직: 데이터베이스에 사용자 정보 저장
+        // API 요청 로그 찍기
+        console.log(`회원가입 요청: ${id}, ${name}, ${email}, ${phone}, ${password}, ${occupation}`);
         const result = await pool.query('INSERT INTO users (id, name, email, phone, password, occupation) VALUES ($1, $2, $3, $4, $5, $6)', [id, name, email, phone, password, occupation]);
         res.status(200).json({ success: true, message: '회원가입 성공' });
+        console.log(`회원가입 완료: ${id}`);
     } catch (error) {
         console.error(error);
         res.status(500).json({ success: false, message: '서버 오류' });
