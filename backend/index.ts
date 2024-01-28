@@ -1,7 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
-import { Pool } from 'pg';
+import pkg from 'pg';
 import dotenv from 'dotenv';
 import path from "path";
 
@@ -9,6 +9,7 @@ dotenv.config();
 
 const app = express();
 const port = 3000;
+const { Pool } = pkg;
 
 // PostgreSQL 데이터베이스 설정
 const pool = new Pool({
