@@ -3,13 +3,18 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import pkg from 'pg';
 import dotenv from 'dotenv';
+// import url
+import url from 'url';
 import path from "path";
 
 dotenv.config();
 
+const { fileURLToPath } = url;
+
 const app = express();
 const port = 3000;
 const { Pool } = pkg;
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 // PostgreSQL 데이터베이스 설정
 const pool = new Pool({
