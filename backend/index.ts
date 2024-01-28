@@ -3,6 +3,7 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import { Pool } from 'pg';
 import 'dotenv/config';
+import path from "path";
 
 const app = express();
 const port = 3000;
@@ -37,6 +38,17 @@ app.post('/api/auth/signup', async (req, res) => {
         res.status(500).json({ success: false, message: '서버 오류' });
     }
 });
+
+
+// React 앱 서비스
+// 정적 파일 제공 설정 추가
+app.use(express.static(path.join(__dirname, '../frontend/build')));
+
+// 모든 GET 요청에 대해 React 앱 서비스
+app.get('/*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend/build', 'index.html'));
+})
+
 
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
