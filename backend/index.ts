@@ -2,8 +2,10 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import { Pool } from 'pg';
-import 'dotenv/config';
+import dotenv from 'dotenv';
 import path from "path";
+
+dotenv.config();
 
 const app = express();
 const port = 3000;
@@ -53,3 +55,5 @@ app.get('/*', (req, res) => {
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
 });
+
+export default app;
