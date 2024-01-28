@@ -33,6 +33,7 @@ function Login() {
                 password: password,
             }).then((response) => {
                 if (response.data.success) {
+                    // TODO: redux로 변경
                     // 회원 정보를 localStorage에 저장
                     localStorage.setItem('user', JSON.stringify(response.data.user));
 

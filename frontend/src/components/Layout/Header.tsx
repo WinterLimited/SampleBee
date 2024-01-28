@@ -13,7 +13,7 @@ import ShoppingBagOutlinedIcon from '@mui/icons-material/ShoppingBagOutlined';
 const pages = ['Products', 'PARTNER COMPANY', 'BRANDS'];
 
 function Header() {
-    const [login, setLogin] = useState<boolean>(true);
+    const [login, setLogin] = useState<boolean>(false);
     const [selectedMenu, setSelectedMenu] = useState<string>('');
 
     const handleMenuClick = (page : string) => {

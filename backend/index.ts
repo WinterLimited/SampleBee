@@ -35,6 +35,8 @@ const pool = new Pool({
 app.use(cors());
 app.use(bodyParser.json());
 
+// TODO: 모듈화
+
 // POST /api/auth/signup
 app.post('/api/auth/signup', async (req, res) => {
     const { id, name, email, phone, password, occupation } = req.body;
