@@ -3,9 +3,13 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import pkg from 'pg';
 import dotenv from 'dotenv';
+
 // import url
 import url from 'url';
 import path from "path";
+
+// import bycrypt
+import bcrypt from 'bcrypt';
 
 dotenv.config();
 
@@ -32,18 +36,18 @@ app.use(bodyParser.json());
 app.post('/api/auth/signup', async (req, res) => {
     const { id, name, email, phone, password, occupation } = req.body;
 
-    // 유효성 검사
     if (!id || !name || !email || !phone || !password || !occupation) {
         return res.status(400).json({ success: false, message: '모든 필드를 채워주세요.' });
     }
 
     try {
-        // 회원가입 로직: 데이터베이스에 사용자 정보 저장
-        // API 요청 로그 찍기
-        console.log(`회원가입 요청: ${id}, ${name}, ${email}, ${phone}, ${password}, ${occupation}`);
-        const result = await pool.query('INSERT INTO users (id, name, email, phone, password, occupation) VALUES ($1, $2, $3, $4, $5, $6)', [id, name, email, phone, password, occupation]);
+        // 비밀번호 해싱
+        const hashedPassword = await bcrypt.hash(password, 10); // 10은 솔트 라운드 수
+
+        console.log(`회원가입 요청: ${id}, ${name}, ${email}, ${phone}, ${hashedPassword}, ${occupation}`);
+        const result = await pool.query('INSERT INTO users (id, name, email, phone, password, occupation) VALUES ($1, $2, $3, $4, $5, $6)', [id, name, email, phone, hashedPassword, occupation]);
+
         res.status(200).json({ success: true, message: '회원가입 성공' });
-        console.log(`회원가입 완료: ${id}`);
     } catch (error) {
         console.error(error);
         res.status(500).json({ success: false, message: '서버 오류' });
