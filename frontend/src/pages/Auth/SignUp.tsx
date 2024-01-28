@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import { Box, TextField, Button, Typography, Container, FormControl, InputLabel } from '@mui/material';
 import { Link } from 'react-router-dom';
 
+// Import axios
+import axios from '../../api/axiosConfig';
+
 // import Alert
 import {SwalAlert} from "../../components/Common/SwalAlert";
 
@@ -16,14 +19,31 @@ function SignUp() {
 
     const handleSignUp = () => {
 
-
-        // 비어있는 값이 있는지 확인
+        // Validation
         if (id === '' || name === '' || email === '' || phone === '' || password === '' || confirmPassword === '' || occupation === '') {
             SwalAlert('warning', '입력 오류', '모든 항목을 입력해주세요.');
+        } else if (password.length < 8) {
+            SwalAlert('warning', '입력 오류', '비밀번호는 8자 이상이어야 합니다.');
         } else if (password !== confirmPassword) {
             SwalAlert('warning', '입력 오류', '비밀번호가 일치하지 않습니다.');
         } else {
-            SwalAlert('success', '회원가입 성공', '회원가입에 성공했습니다.');
+
+            axios.post('/api/auth/signup', {
+                id: id,
+                name: name,
+                email: email,
+                phone: phone,
+                password: password,
+                occupation: occupation,
+            }).then((res) => {
+                if (res.data.success) {
+                    SwalAlert('success', '회원가입 성공', '회원가입이 성공적으로 완료되었습니다.');
+                } else {
+                    SwalAlert('error', '회원가입 실패', '회원가입에 실패했습니다.');
+                }
+            }).catch((err) => {
+                SwalAlert('error', '회원가입 실패', '회원가입에 실패했습니다.');
+            })
         }
 
     }
@@ -240,7 +260,7 @@ function SignUp() {
                                 top: '-5px',
                                 left: '-10px',
                             }}>
-                            PW
+                            PASSWORD
                         </InputLabel>
                         <TextField
                             margin="normal"
@@ -253,7 +273,7 @@ function SignUp() {
                             autoFocus
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
-                            placeholder={"비밀번호를 입력해주세요."}
+                            placeholder={"비밀번호를 입력해주세요. (8자리 이상)"}
                             InputProps={{
                                 sx: {
                                     backgroundColor: 'white',
@@ -279,7 +299,7 @@ function SignUp() {
                                 top: '-5px',
                                 left: '-10px',
                             }}>
-                            PW CONFIRM
+                            PASSWORD CONFIRM
                         </InputLabel>
                         <TextField
                             margin="normal"
@@ -292,7 +312,7 @@ function SignUp() {
                             autoFocus
                             value={confirmPassword}
                             onChange={(e) => setConfirmPassword(e.target.value)}
-                            placeholder={"비밀번호 다시 입력해주세요."}
+                            placeholder={"비밀번호 다시 입력해주세요. (8자리 이상)"}
                             InputProps={{
                                 sx: {
                                     backgroundColor: 'white',

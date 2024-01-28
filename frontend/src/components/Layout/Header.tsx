@@ -26,7 +26,7 @@ function Header() {
             <AppBar position="fixed"
                     sx={{
                         height: selectedMenu ? '200px' : '64px',
-                        backgroundColor: selectedMenu ? 'white' : 'inherit',
+                        backgroundColor: selectedMenu ? 'white' : 'white',
                         boxShadow: 'none',
                         transition: 'height 0.3s',
 
