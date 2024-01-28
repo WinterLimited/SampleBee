@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import {Box, TextField, Button, Typography, Container, FormControl, InputLabel} from '@mui/material';
+import {Link} from "react-router-dom";
 
 // import Icon
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
 // import Alert
 import {SwalAlert} from "../../components/Common/SwalAlert";
-import {Link} from "react-router-dom";
 
 function Login() {
     const [id, setId] = useState('');
@@ -17,17 +17,12 @@ function Login() {
         SwalAlert('info', '준비중', '페이지 준비중입니다.');
     };
 
-    const handleLogin = (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        // 여기에 로그인 처리 로직을 추가합니다.
-        console.log("로그인 시도:", id, password);
-    };
-
     return (
         <Container maxWidth="sm">
             <Box
                 sx={{
                     marginTop: 8,
+                    marginBottom: 8,
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',
@@ -36,7 +31,7 @@ function Login() {
                 <Typography component="h1" variant="h6" fontWeight={'bold'}>
                     LOG IN
                 </Typography>
-                <Box component="form" onSubmit={handleLogin} noValidate
+                <Box
                      sx={{
                          mt: 7,
                          p: 7,
@@ -111,6 +106,7 @@ function Login() {
                             id="password"
                             name="password"
                             autoComplete="password"
+                            type="password"
                             autoFocus
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
@@ -164,7 +160,6 @@ function Login() {
                     </Box>
 
                     <Button
-                        type="submit"
                         fullWidth
                         variant="contained"
                         sx={{
@@ -189,7 +184,6 @@ function Login() {
                     </Button>
 
                     <Button
-                        type="submit"
                         fullWidth
                         variant="contained"
                         sx={{
