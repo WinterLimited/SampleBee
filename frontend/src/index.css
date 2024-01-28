@@ -1,9 +1,15 @@
+/* 폰트 */
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css");
+
 /* index.css 또는 App.css 등 전역 CSS 파일에 추가 */
 body, html {
     margin: 0;
     padding: 0;
     width: 100%;
     height: 100%;
+
+    /* TODO: 폰트 적용 */
+    font-family: "Pretendard Variable", sans-serif;
 }
 
 #root {

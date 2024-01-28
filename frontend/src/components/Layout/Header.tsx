@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { AppBar, Toolbar, Typography, Button, Box, Container } from '@mui/material';
 
+// Login 버튼에 Link 적용
+import { Link } from 'react-router-dom';
+
 // Alert
 import { SwalAlert } from '../Common/SwalAlert';
 
@@ -36,8 +39,6 @@ function Header() {
                         <Typography
                             variant="h6"
                             noWrap
-                            component="a"
-                            href="#app-bar-with-responsive-menu"
                             sx={{
                                 mr: 2,
                                 display: { xs: 'none', md: 'flex' },
@@ -48,6 +49,8 @@ function Header() {
                                 textDecoration: 'none',
                                 maxWidth: '175px',
                             }}
+                            component={Link}
+                            to="/"
                         >
                             <img
                                 src={"logo/horizon_logo1.png"}
@@ -95,6 +98,8 @@ function Header() {
                                         
                                     }
                                 }}
+                                component={Link}
+                                to="/login"
                             >
                                 LOG IN
                             </Button>
@@ -115,6 +120,7 @@ function Header() {
 
                                     }
                                 }}
+                                onClick={() => handleMenuClick('Cart')}
                             >
                                 <ShoppingBagOutlinedIcon />
                             </Button>

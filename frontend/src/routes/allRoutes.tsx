@@ -2,14 +2,13 @@ import React from "react";
 
 // 로그인 되지 않았을때 이용 가능한 라우터
 import Main from "../pages/Main";
-// import Login from "../pages/Authentication/Login";
+import Login from "../pages/Auth/Login";
 // import Register from "../pages/Authentication/Register";
 // import Logout from "../pages/Authentication/Logout";
 
 const userRoutes = [
-    { path: "/", component: <Main /> }
-    // { path: "/", component: <Main /> },
-    // { path: "/logout", component: <Logout /> },
+    { path: "/", component: <Main /> },
+    { path: "/login", component: <Login /> },
 ];
 
 const authRoutes = [
