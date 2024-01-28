@@ -57,6 +57,36 @@ app.post('/api/auth/signup', async (req, res) => {
     }
 });
 
+// POST /api/auth/login
+app.post('/api/auth/login', async (req, res) => {
+    const { id, password } = req.body;
+
+    if (!id || !password) {
+        return res.status(400).json({ success: false, message: 'ID와 비밀번호를 입력해주세요.' });
+    }
+
+    try {
+        // 데이터베이스에서 사용자 검색
+        const result = await pool.query('SELECT * FROM users WHERE id = $1', [id]);
+        if (result.rows.length === 0) {
+            return res.status(401).json({ success: false, message: '존재하지 않는 사용자입니다.' });
+        }
+
+        // 비밀번호 검증
+        const user = result.rows[0];
+        const isValid = await bcrypt.compare(password, user.password);
+        if (!isValid) {
+            return res.status(401).json({ success: false, message: '잘못된 비밀번호입니다.' });
+        }
+
+        // 로그인 성공
+        res.status(200).json({ success: true, message: '로그인 성공', user: { id: user.id, name: user.name, email: user.email } });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false, message: '서버 오류' });
+    }
+});
+
 
 // React 앱 서비스
 // 정적 파일 제공 설정 추가

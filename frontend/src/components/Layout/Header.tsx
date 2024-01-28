@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import { AppBar, Toolbar, Typography, Button, Box, Container } from '@mui/material';
 
 // Login 버튼에 Link 적용
@@ -13,6 +13,7 @@ import ShoppingBagOutlinedIcon from '@mui/icons-material/ShoppingBagOutlined';
 const pages = ['Products', 'PARTNER COMPANY', 'BRANDS'];
 
 function Header() {
+    const [login, setLogin] = useState<boolean>(true);
     const [selectedMenu, setSelectedMenu] = useState<string>('');
 
     const handleMenuClick = (page : string) => {
@@ -20,6 +21,18 @@ function Header() {
         SwalAlert('info', '준비중', '페이지 준비중입니다.');
         // setSelectedMenu(page);
     };
+
+    useEffect(() => {
+        return () => {
+            // 로그인 여부 확인
+            if (localStorage.getItem('user')) {
+                setLogin(true);
+            } else {
+                setLogin(false);
+            }
+        };
+    }, []);
+
 
     return (
         <React.Fragment>
@@ -83,27 +96,47 @@ function Header() {
 
                         {/* 로그인 버튼 오른쪽 배치 */}
                         <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-                            <Button
-                                variant="outlined"
-                                sx={{
-                                    color: 'white',
-                                    backgroundColor: 'rgb(41, 41, 46)',
-                                    fontSize: '13px',
-                                    fontWeight: 'bold',
-                                    mr: 1,
-                                    border: '1px solid white',
-                                    '&:hover': {
-                                        backgroundColor: 'rgba(41, 41, 46, 0.8)',
+                            {login ? (
+                                <Button
+                                    variant="outlined"
+                                    sx={{
+                                        color: 'white',
+                                        backgroundColor: 'rgb(41, 41, 46)',
+                                        fontSize: '13px',
+                                        fontWeight: 'bold',
+                                        mr: 1,
                                         border: '1px solid white',
-                                        
-                                    }
-                                }}
-                                component={Link}
-                                to="/login"
-                            >
-                                LOG IN
-                            </Button>
-
+                                        '&:hover': {
+                                            backgroundColor: 'rgba(41, 41, 46, 0.8)',
+                                            border: '1px solid white',
+                                        }
+                                    }}
+                                    component={Link}
+                                    to="/logout"
+                                >
+                                    LOG OUT
+                                </Button>
+                            ) : (
+                                <Button
+                                    variant="outlined"
+                                    sx={{
+                                        color: 'white',
+                                        backgroundColor: 'rgb(41, 41, 46)',
+                                        fontSize: '13px',
+                                        fontWeight: 'bold',
+                                        mr: 1,
+                                        border: '1px solid white',
+                                        '&:hover': {
+                                            backgroundColor: 'rgba(41, 41, 46, 0.8)',
+                                            border: '1px solid white',
+                                        }
+                                    }}
+                                    component={Link}
+                                    to="/login"
+                                >
+                                    LOG IN
+                                </Button>
+                            )}
                             <Button
                                 variant="outlined"
                                 sx={{

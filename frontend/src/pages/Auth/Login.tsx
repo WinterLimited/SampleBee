@@ -6,7 +6,8 @@ import {Link} from "react-router-dom";
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
 // import Alert
-import {SwalAlert} from "../../components/Common/SwalAlert";
+import {SwalAlert, SwalAlertCallBack} from "../../components/Common/SwalAlert";
+import axios from "../../api/axiosConfig";
 
 function Login() {
     const [id, setId] = useState('');
@@ -16,6 +17,37 @@ function Login() {
         // 페이지 준비중 문구
         SwalAlert('info', '준비중', '페이지 준비중입니다.');
     };
+
+    const handleLogin = () => {
+
+        // Validation
+        if (id === '' || password === '') {
+            SwalAlert('warning', '입력 오류', '아이디와 비밀번호를 입력해주세요.');
+            return;
+        } else if (password.length < 8) {
+            SwalAlert('warning', '입력 오류', '비밀번호는 8자리 이상이어야 합니다.');
+            return;
+        } else {
+            axios.post('/api/auth/login', {
+                id: id,
+                password: password,
+            }).then((response) => {
+                if (response.data.success) {
+                    // 회원 정보를 localStorage에 저장
+                    localStorage.setItem('user', JSON.stringify(response.data.user));
+
+                    // 로그인 성공 CallBack redirection 알림창
+                    SwalAlertCallBack('success', '로그인 성공', '로그인이 완료되었습니다.', () => {
+                        window.location.href = '/';
+                    });
+                } else {
+                    SwalAlert('error', '로그인 실패', '아이디 또는 비밀번호를 확인해주세요.');
+                }
+            }).catch((error) => {
+                SwalAlert('error', '로그인 실패', '아이디 또는 비밀번호를 확인해주세요.');
+            });
+        }
+    }
 
     return (
         <Container maxWidth="sm">
@@ -179,6 +211,7 @@ function Login() {
                             //     boxShadow: 'none',
                             // }
                         }}
+                        onClick={handleLogin}
                     >
                         LOG IN
                     </Button>

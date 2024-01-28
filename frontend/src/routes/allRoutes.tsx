@@ -4,12 +4,14 @@ import React from "react";
 import Main from "../pages/Main";
 import Login from "../pages/Auth/Login";
 import SignUp from "../pages/Auth/SignUp";
+import Logout from "../pages/Auth/Logout";
 // import Logout from "../pages/Authentication/Logout";
 
 const userRoutes = [
     { path: "/", component: <Main /> },
     { path: "/login", component: <Login /> },
     { path: "/signup", component: <SignUp /> },
+    { path: "/logout", component: <Logout /> },
 ];
 
 const authRoutes = [
