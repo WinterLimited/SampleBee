@@ -65,7 +65,7 @@ function Header() {
                             to="/"
                         >
                             <img
-                                src={"logo/horizon_logo1.png"}
+                                src={`${process.env.PUBLIC_URL}/logo/horizon_logo1.png`}
                                 alt="horizon-logo"
                                 style={{ width: '100%' }}
                             />

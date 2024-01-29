@@ -42,7 +42,7 @@ function Footer() {
                                 }}
                             >
                                 <img
-                                    src={"logo/horizon_logo2.png"}
+                                    src={`${process.env.PUBLIC_URL}/logo/horizon_logo2.png`}
                                     alt="horizon-logo"
                                     style={{ width: '100%' }}
                                 />

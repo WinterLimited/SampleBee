@@ -8,9 +8,9 @@ import ImageCarousel from "./ImageCarousel";
 
 function Main() {
     const images = [
-        'main/firstSection/main_background1.png',
-        'main/firstSection/main_background2.png',
-        'main/firstSection/main_background3.png',
+        `${process.env.PUBLIC_URL}/main/firstSection/main_background1.png`,
+        `${process.env.PUBLIC_URL}/main/firstSection/main_background2.png`,
+        `${process.env.PUBLIC_URL}/main/firstSection/main_background3.png`,
     ];
 
     const [bgIndex, setBgIndex] = useState(0);
@@ -107,7 +107,7 @@ function Main() {
                                 justifyContent: 'flex-end',
                                 alignItems: 'flex-end',
                                 borderRadius: '25px',
-                                backgroundImage: `url('main/secondSection/products.png')`,
+                                backgroundImage: `url('${process.env.PUBLIC_URL}/main/secondSection/products.png')`,
                                 backgroundSize: 'cover',
                                 transition: 'background-image .5s ease-in-out',
                                 position: 'relative',
@@ -166,7 +166,7 @@ function Main() {
                                 justifyContent: 'flex-start',
                                 alignItems: 'flex-end',
                                 borderRadius: '25px',
-                                backgroundImage: `url('main/secondSection/material.png')`,
+                                backgroundImage: `url('${process.env.PUBLIC_URL}/main/secondSection/material.png')`,
                                 backgroundSize: 'cover',
                                 transition: 'background-image .5s ease-in-out',
                                 position: 'relative',
@@ -239,7 +239,7 @@ function Main() {
                                     justifyContent: 'flex-start',
                                     alignItems: 'flex-end',
                                     borderRadius: '25px',
-                                    backgroundImage: `url('main/secondSection/color.png')`,
+                                    backgroundImage: `url('${process.env.PUBLIC_URL}/main/secondSection/color.png')`,
                                     backgroundSize: 'cover',
                                     transition: 'background-image .5s ease-in-out',
                                     position: 'relative',
@@ -311,7 +311,7 @@ function Main() {
                                     justifyContent: 'flex-start',
                                     alignItems: 'flex-end',
                                     borderRadius: '25px',
-                                    backgroundImage: `url('main/secondSection/about.png')`,
+                                    backgroundImage: `url('${process.env.PUBLIC_URL}/main/secondSection/about.png')`,
                                     backgroundSize: 'cover',
                                     transition: 'background-image .5s ease-in-out',
                                     position: 'relative',
@@ -403,7 +403,7 @@ function Main() {
                     }}
                 >
                     <img
-                        src={"logo/horizon_logo1.png"}
+                        src={`${process.env.PUBLIC_URL}/logo/horizon_logo1.png`}
                         alt="horizon-logo"
                         style={{ width: '15%', marginBottom: 1 }} // 이미지 크기 조정
                     />
@@ -443,7 +443,7 @@ function Main() {
                         }}
                     >
                         <img
-                            src={"main/thridSection/icon1.png"}
+                            src={`${process.env.PUBLIC_URL}/main/thridSection/icon1.png`}
                             alt="horizon-logo"
                             style={{ height: '15vh' }}
                         />
@@ -472,7 +472,7 @@ function Main() {
                         }}
                     >
                         <img
-                            src={"main/thridSection/icon2.png"}
+                            src={`${process.env.PUBLIC_URL}/main/thridSection/icon2.png`}
                             alt="horizon-logo"
                             style={{ height: '15vh' }}
                         />
@@ -501,7 +501,7 @@ function Main() {
                         }}
                     >
                         <img
-                            src={"main/thridSection/icon3.png"}
+                            src={`${process.env.PUBLIC_URL}/main/thridSection/icon3.png`}
                             alt="horizon-logo"
                             style={{ height: '15vh' }}
                         />
@@ -608,7 +608,7 @@ function Main() {
                                         justifyContent: 'flex-end',
                                         alignItems: 'flex-start',
                                         borderRadius: '25px',
-                                        backgroundImage: `url('main/fourthSection/left1.png')`,
+                                        backgroundImage: `url('${process.env.PUBLIC_URL}/main/fourthSection/left1.png')`,
                                         backgroundSize: 'cover',
                                         transition: 'background-image .5s ease-in-out',
                                         position: 'relative',
@@ -694,7 +694,7 @@ function Main() {
                                         justifyContent: 'flex-end',
                                         alignItems: 'flex-start',
                                         borderRadius: '25px',
-                                        backgroundImage: `url('main/fourthSection/left2.png')`,
+                                        backgroundImage: `url('${process.env.PUBLIC_URL}/main/fourthSection/left2.png')`,
                                         backgroundSize: 'cover',
                                         transition: 'background-image .5s ease-in-out',
                                         position: 'relative',
@@ -783,7 +783,7 @@ function Main() {
                                         justifyContent: 'flex-end',
                                         alignItems: 'flex-start',
                                         borderRadius: '25px',
-                                        backgroundImage: `url('main/fourthSection/right1.png')`,
+                                        backgroundImage: `url('${process.env.PUBLIC_URL}/main/fourthSection/right1.png')`,
                                         backgroundSize: 'cover',
                                         transition: 'background-image .5s ease-in-out',
                                         position: 'relative',
@@ -871,7 +871,7 @@ function Main() {
                                         justifyContent: 'flex-end',
                                         alignItems: 'flex-start',
                                         borderRadius: '25px',
-                                        backgroundImage: `url('main/fourthSection/right2.png')`,
+                                        backgroundImage: `url('${process.env.PUBLIC_URL}/main/fourthSection/right2.png')`,
                                         backgroundSize: 'cover',
                                         transition: 'background-image .5s ease-in-out',
                                         position: 'relative',
