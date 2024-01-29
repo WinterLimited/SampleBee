@@ -96,7 +96,9 @@ function Header() {
 
                         {/* 로그인 버튼 오른쪽 배치 */}
                         <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-                            {login ? (
+                            {
+                                // TODO: 수정
+                                login ? (
                                 <Button
                                     variant="outlined"
                                     sx={{
