@@ -10,16 +10,15 @@ import { SwalAlert } from '../Common/SwalAlert';
 // Icons
 import ShoppingBagOutlinedIcon from '@mui/icons-material/ShoppingBagOutlined';
 
-const pages = ['Products', 'PARTNER COMPANY', 'BRANDS'];
-
 function Header() {
     const [login, setLogin] = useState<boolean>(false);
     const [selectedMenu, setSelectedMenu] = useState<string>('');
 
+    const pages = ['Products', 'Partner Company', 'Brands'];
+
     const handleMenuClick = (page : string) => {
         // 페이지 준비중 문구
         SwalAlert('info', '준비중', '페이지 준비중입니다.');
-        // setSelectedMenu(page);
     };
 
     useEffect(() => {
@@ -80,7 +79,8 @@ function Header() {
                                     sx={{
                                         color: 'black',
                                         mx: 2,
-                                        fontSize: '13px',
+                                        fontSize: '15px',
+                                        textTransform: 'none',
                                         '&:hover': {
                                             fontWeight: 'bold',
                                             backgroundColor: 'transparent',

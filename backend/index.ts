@@ -37,6 +37,24 @@ app.use(bodyParser.json());
 
 // TODO: 모듈화
 
+// 아이디 중복 확인
+app.get('/api/auth/checkid/:id', async (req, res) => {
+    const id = req.params.id;
+
+    try {
+        const result = await pool.query('SELECT * FROM users WHERE id = $1', [id]);
+        if (result.rows.length === 0) {
+            return res.status(200).json({ success: true, message: '사용 가능한 아이디입니다.' });
+        } else {
+            return res.status(409).json({ success: false, message: '이미 사용 중인 아이디입니다.' });
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false, message: '서버 오류' });
+    }
+
+});
+
 // POST /api/auth/signup
 app.post('/api/auth/signup', async (req, res) => {
     const { id, name, email, phone, password, occupation } = req.body;

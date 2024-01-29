@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, TextField, Button, Typography, Container, FormControl, InputLabel } from '@mui/material';
+import {Box, TextField, Button, Typography, Container, FormControl, InputLabel, FormHelperText} from '@mui/material';
 import { Link } from 'react-router-dom';
 
 // Import axios
@@ -10,6 +10,7 @@ import {SwalAlert, SwalAlertCallBack} from "../../components/Common/SwalAlert";
 
 function SignUp() {
     const [id, setId] = useState('');
+    const [check, setCheck] = useState(false);
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
@@ -17,11 +18,37 @@ function SignUp() {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [occupation, setOccupation] = useState('');
 
+    const changeId = async (id: string) => {
+        setId(id);
+
+        if (id.length >= 6) {
+            try {
+                const response = await axios.get(`/api/auth/checkid/${id}`);
+                if (response.data.success) {
+                    setCheck(true);
+                    // 추가적인 성공 메시지나 로직
+                } else {
+                    setCheck(false);
+                    SwalAlert('error', '중복된 아이디', '이미 사용 중인 아이디입니다.');
+                }
+            } catch (error) {
+                // 서버 에러 처리
+                SwalAlert('error', '서버 오류', '서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
+            }
+        } else {
+            setCheck(false);
+        }
+    }
+
+
+
     const handleSignUp = () => {
 
         // Validation
         if (id === '' || name === '' || email === '' || phone === '' || password === '' || confirmPassword === '' || occupation === '') {
             SwalAlert('warning', '입력 오류', '모든 항목을 입력해주세요.');
+        } else if (id.length < 6) {
+            SwalAlert('warning', '입력 오류', '아이디는 6자 이상이어야 합니다.');
         } else if (password.length < 8) {
             SwalAlert('warning', '입력 오류', '비밀번호는 8자 이상이어야 합니다.');
         } else if (password !== confirmPassword) {
@@ -74,19 +101,18 @@ function SignUp() {
                          borderRadius: '10px',
                      }}>
 
-                    <FormControl fullWidth>
+                    <FormControl fullWidth error={!check && id.length >= 6}>
                         <InputLabel
                             htmlFor="id"
                             sx={{
                                 color: 'black',
                                 fontSize: '14px',
                                 fontWeight: 'bold',
-
-                                // Input의 외부에 존재하도록 설정
                                 position: 'relative',
                                 top: '-5px',
                                 left: '-10px',
-                            }}>
+                            }}
+                        >
                             ID
                         </InputLabel>
                         <TextField
@@ -98,16 +124,14 @@ function SignUp() {
                             autoComplete="id"
                             autoFocus
                             value={id}
-                            onChange={(e) => setId(e.target.value)}
-                            placeholder={"아이디를 입력해주세요."}
+                            onChange={(e) => changeId(e.target.value)}
+                            placeholder="아이디를 입력해주세요."
                             InputProps={{
                                 sx: {
-                                    // 포커스 시 테두리 제거
                                     '&.Mui-focused fieldset': {
                                         outline: 'none',
-                                        borderColor: 'transparent',  // 테두리 색 변경
+                                        borderColor: 'transparent',
                                     },
-
                                     backgroundColor: 'white',
                                     border: id === "" ? '1px solid rgb(249, 249, 249)' : '1px solid rgb(41, 41, 46)',
                                     minWidth: '250px',
@@ -116,7 +140,15 @@ function SignUp() {
                                 },
                             }}
                         />
+                        {
+                            id.length >= 6 && (
+                                <FormHelperText>
+                                    {check ? '사용 가능한 아이디입니다.' : '이미 사용 중인 아이디입니다.'}
+                                </FormHelperText>
+                            )
+                        }
                     </FormControl>
+
 
                     <FormControl fullWidth>
                         <InputLabel

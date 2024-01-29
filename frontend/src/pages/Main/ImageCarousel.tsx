@@ -155,7 +155,7 @@ function ImageCarousel() {
                             <Typography sx={{ textAlign: 'left', mt: 2, fontSize: '16px', fontWeight: 'bold', color: 'rgb(41, 41, 46)' }}>
                                 {item.text}
                             </Typography>
-                            <Typography sx={{ textAlign: 'left', fontSize: '16px', color: 'rgb(148, 148, 148)' }}>
+                            <Typography sx={{ textAlign: 'left', fontSize: '15px', color: 'rgb(148, 148, 148)' }}>
                                 Coala Interior Film Wood <br />
                                 {item.text2}
                             </Typography>
