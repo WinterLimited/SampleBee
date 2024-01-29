@@ -5,21 +5,20 @@ import Main from "../pages/Main";
 import Login from "../pages/Auth/Login";
 import SignUp from "../pages/Auth/SignUp";
 import Logout from "../pages/Auth/Logout";
-// import Logout from "../pages/Authentication/Logout";
+import AdminUsers from "../pages/Admin/AdminUsers";
 
 const userRoutes = [
     { path: "/", component: <Main /> },
     { path: "/login", component: <Login /> },
     { path: "/signup", component: <SignUp /> },
     { path: "/logout", component: <Logout /> },
+
+    // 관리자 페이지
+    { path: "/admin/users", component: <AdminUsers /> }
 ];
 
 const authRoutes = [
     { path: "/", component: <Main />}
-    // { path: "/", component: <Main /> },
-    // { path: "/login", component: <Login /> },
-    // { path: "/register", component: <Register /> },
-    // { path: "/logout", component: <Logout /> },
 ];
 
 export { userRoutes, authRoutes };

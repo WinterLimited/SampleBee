@@ -22,15 +22,15 @@ function Header() {
     };
 
     useEffect(() => {
-        return () => {
-            // 로그인 여부 확인
-            if (localStorage.getItem('user')) {
-                setLogin(true);
-            } else {
-                setLogin(false);
-            }
-        };
+        // 로그인 여부 확인
+        // TODO: redux로 변경
+        if (localStorage.getItem('user')) {
+            setLogin(true);
+        } else {
+            setLogin(false);
+        }
     }, []);
+
 
 
     return (

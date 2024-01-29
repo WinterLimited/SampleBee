@@ -37,6 +37,19 @@ app.use(bodyParser.json());
 
 // TODO: 모듈화
 
+// 관리자용 사용자 정보 조회 API
+app.get('/api/admin/users', async (req, res) => {
+    // TODO: 관리자 인증 로직 추가
+
+    try {
+        const result = await pool.query('SELECT * FROM users');
+        res.status(200).json({ success: true, users: result.rows });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false, message: '서버 오류' });
+    }
+});
+
 // 아이디 중복 확인
 app.get('/api/auth/checkid/:id', async (req, res) => {
     const id = req.params.id;
