@@ -11,15 +11,43 @@ import {
     DialogContent,
     DialogContentText, DialogActions, Button
 } from '@mui/material';
-import {SwalAlert} from "../Common/SwalAlert";
+
+// Import Alert
+import {SwalAlert, SwalAlertCallBack, SwalConfirm} from "../../components/Common/SwalAlert";
+import axios from "../../api/axiosConfig";
 
 function Footer() {
     const [openTermsDialog, setOpenTermsDialog] = React.useState(false);
     const [openPrivacyDialog, setOpenPrivacyDialog] = React.useState(false);
 
+
     // 페이지 준비중 문구
-    const handlePrepare = () => {
-        SwalAlert('info', '준비중', '페이지 준비중입니다.');
+    const handleDeleteAccount = () => {
+        // 로그인 여부 확인
+        // TODO: redux로 변경
+        if (localStorage.getItem('user')) {
+            SwalConfirm('warning', '회원탈퇴', '정말로 탈퇴하시겠습니까?', {}, async () => {
+                // 회원 탈퇴 로직
+                try {
+                    const user = JSON.parse(localStorage.getItem('user') || '{}');
+
+                    // 여기에 실제 회원 탈퇴를 처리하는 API 요청을 넣습니다.
+                    const response = await axios.post('/api/user/delete', { userId: user.id });
+
+                    // 회원 탈퇴 성공 시
+                    if (response.data.success) {
+                        SwalAlertCallBack('success', '회원 탈퇴', '회원 탈퇴가 완료되었습니다.', () => {
+                            localStorage.removeItem('user');
+                            window.location.href = '/';
+                        });
+                    }
+                } catch (error) {
+                    console.error('회원 탈퇴 처리 중 오류 발생:', error);
+                }
+            });
+        } else {
+            SwalAlert('warning', '로그인', '로그인이 이후 이용 가능합니다.');
+        }
     };
 
     return (
@@ -82,6 +110,7 @@ function Footer() {
                         <Box sx={{ display: 'flex', alignItems: 'center' }}>
                             <Link  color="inherit" sx={{ paddingRight: '20px', cursor: 'pointer' }} onClick={() => setOpenTermsDialog(true)}>이용약관</Link>
                             <Link  color="inherit" sx={{ cursor: 'pointer' }} onClick={() => setOpenPrivacyDialog(true)}>개인정보 처리방침</Link>
+                            <Link  color="inherit" sx={{ cursor: 'pointer' }} onClick={handleDeleteAccount}>회원탈퇴</Link>
                         </Box>
                     </Toolbar>
 

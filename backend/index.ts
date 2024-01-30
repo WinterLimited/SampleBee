@@ -151,6 +151,31 @@ app.post('/api/auth/login', async (req, res) => {
     }
 });
 
+// POST /api/user/delete
+app.post('/api/user/delete', async (req, res) => {
+    const { userId } = req.body;
+
+    if (!userId) {
+        return res.status(400).json({ success: false, message: '사용자 ID가 필요합니다.' });
+    }
+
+    try {
+        // 데이터베이스에서 사용자 삭제
+        const result = await pool.query('DELETE FROM users WHERE id = $1', [userId]);
+
+        // 삭제된 행이 없으면, 사용자가 존재하지 않는 것으로 간주
+        if (result.rowCount === 0) {
+            return res.status(404).json({ success: false, message: '존재하지 않는 사용자입니다.' });
+        }
+
+        // 회원 탈퇴 성공
+        res.status(200).json({ success: true, message: '회원 탈퇴가 완료되었습니다.' });
+    } catch (error) {
+        console.error('회원 탈퇴 처리 중 오류 발생:', error);
+        res.status(500).json({ success: false, message: '서버 오류' });
+    }
+});
+
 
 // React 앱 서비스
 // 정적 파일 제공 설정 추가
