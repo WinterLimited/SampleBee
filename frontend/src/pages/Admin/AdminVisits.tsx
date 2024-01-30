@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Bar } from 'react-chartjs-2';
 import { Chart, registerables } from 'chart.js';
 import {SwalAlertCallBack} from "../../components/Common/SwalAlert";
-import {Box, Typography} from "@mui/material";
+import {Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography} from "@mui/material";
 Chart.register(...registerables);
 
 // 방문 기록 타입 정의
@@ -26,16 +26,19 @@ interface ChartData {
 
 function AdminVisits() {
     const [visitData, setVisitData] = useState<ChartData>({ labels: [], datasets: [] });
+    const [visits, setVisits] = useState<Visit[]>([]);
     const [loading, setLoading] = useState(true);
 
     const fetchVisits = async () => {
         try {
             const response = await axios.get('/api/admin/visit');
+            setVisits(response.data.visits);
             const data: ChartData = processVisitData(response.data.visits);
             setVisitData(data);
             setLoading(false);
         } catch (error) {
             console.error('방문 데이터를 가져오는 데 실패했습니다:', error);
+            setLoading(false);
         }
     };
 
@@ -100,20 +103,40 @@ function AdminVisits() {
                 margin: '0 auto',
             }}
         >
-            <Typography
-                variant="h4"
-                component="h3"
-                sx={{
-                    color: 'rgb(41, 41, 46)',
-                    fontSize: '28px',
-                    fontWeight: 'bold',
-                    mt: 3,
-                    mb: 3
-                }}
+            <Typography variant="h4" component="h3"
+                        sx={{
+                            color: 'rgb(41, 41, 46)',
+                            fontSize: '28px',
+                            fontWeight: 'bold',
+                            mt: 3,
+                            mb: 3
+                        }}
             >
                 관리자 페이지 - 방문자 기록
             </Typography>
             <Bar data={visitData} />
+
+            {/* 여기에 테이블 추가 */}
+            <TableContainer component={Paper} sx={{ mt: 4, maxWidth: 700 }}>
+                <Table aria-label="방문 기록 테이블">
+                    <TableHead>
+                        <TableRow>
+                            <TableCell>ID</TableCell>
+                            <TableCell align="right">방문 시간</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {visits.map((visit) => (
+                            <TableRow key={visit.id}>
+                                <TableCell component="th" scope="row">
+                                    {visit.id}
+                                </TableCell>
+                                <TableCell align="right">{new Date(visit.visit_time).toLocaleString()}</TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </TableContainer>
         </Box>
     );
 }
