@@ -109,7 +109,7 @@ function Footer() {
                         {/* 링크 */}
                         <Box sx={{ display: 'flex', alignItems: 'center' }}>
                             <Link  color="inherit" sx={{ paddingRight: '20px', cursor: 'pointer' }} onClick={() => setOpenTermsDialog(true)}>이용약관</Link>
-                            <Link  color="inherit" sx={{ cursor: 'pointer' }} onClick={() => setOpenPrivacyDialog(true)}>개인정보 처리방침</Link>
+                            <Link  color="inherit" sx={{ paddingRight: '20px', cursor: 'pointer' }} onClick={() => setOpenPrivacyDialog(true)}>개인정보 처리방침</Link>
                             <Link  color="inherit" sx={{ cursor: 'pointer' }} onClick={handleDeleteAccount}>회원탈퇴</Link>
                         </Box>
                     </Toolbar>
