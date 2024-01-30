@@ -8,6 +8,7 @@ import Logout from "../pages/Auth/Logout";
 
 
 import AdminUsers from "../pages/Admin/AdminUsers";
+import AdminVisits from "../pages/Admin/AdminVisits";
 
 const userRoutes = [
     { path: "/", component: <Main /> },
@@ -21,7 +22,8 @@ const authRoutes = [
     { path: "/", component: <Main />},
 
     // 관리자 페이지
-    { path: "/admin/users", component: <AdminUsers /> }
+    { path: "/admin/users", component: <AdminUsers /> },
+    { path: "/admin/visits", component: <AdminVisits /> }
 ];
 
 export { userRoutes, authRoutes };

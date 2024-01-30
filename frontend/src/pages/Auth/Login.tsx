@@ -54,19 +54,19 @@ function Login() {
         <Container maxWidth="sm">
             <Box
                 sx={{
-                    marginTop: 8,
+                    marginTop: 12,
                     marginBottom: 8,
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',
                 }}
             >
-                <Typography component="h1" variant="h6" fontWeight={'bold'}>
-                    LOG IN
+                <Typography component="h1" variant="h5" fontWeight={'bold'}>
+                    로그인
                 </Typography>
                 <Box
                      sx={{
-                         mt: 7,
+                         mt: 5,
                          p: 7,
                          backgroundColor: 'rgb(247, 247, 247)',
                          border: '1px solid rgb(249, 249, 249)',
@@ -79,7 +79,7 @@ function Login() {
                             htmlFor="id"
                             sx={{
                                 color: 'black',
-                                fontSize: '14px',
+                                fontSize: '15px',
                                 fontWeight: 'bold',
 
                                 // Input의 외부에 존재하도록 설정
@@ -87,7 +87,7 @@ function Login() {
                                 top: '-5px',
                                 left: '-10px',
                             }}>
-                            ID
+                            아이디
                         </InputLabel>
                         <TextField
                             margin="normal"
@@ -110,9 +110,9 @@ function Login() {
 
                                     backgroundColor: 'white',
                                     border: id === "" ? '1px solid rgb(249, 249, 249)' : '1px solid rgb(41, 41, 46)',
-                                    minWidth: '250px',
+                                    minWidth: '175px',
                                     minHeight: '40px',
-                                    fontSize: '13px',
+                                    fontSize: '14px',
                                 },
                             }}
                         />
@@ -123,7 +123,7 @@ function Login() {
                             htmlFor="password"
                             sx={{
                                 color: 'black',
-                                fontSize: '14px',
+                                fontSize: '15px',
                                 fontWeight: 'bold',
 
                                 // Input의 외부에 존재하도록 설정
@@ -131,7 +131,7 @@ function Login() {
                                 top: '-5px',
                                 left: '-10px',
                             }}>
-                            PW
+                            비밀번호
                         </InputLabel>
                         <TextField
                             margin="normal"
@@ -149,9 +149,9 @@ function Login() {
                                 sx: {
                                     backgroundColor: 'white',
                                     border: password === "" ? '1px solid rgb(249, 249, 249)' : '1px solid rgb(41, 41, 46)',
-                                    minWidth: '250px',
+                                    minWidth: '175px',
                                     minHeight: '40px',
-                                    fontSize: '13px',
+                                    fontSize: '14px',
                                 },
                             }}
                         />
@@ -195,15 +195,19 @@ function Login() {
 
                     <Button
                         fullWidth
-                        variant="contained"
+                        variant="outlined"
                         sx={{
                             mt: 3,
-                            backgroundColor: 'rgb(41, 41, 46)',
-                            minHeight: '40px',
+                            backgroundColor: 'rgb(255, 212, 31)',
+                            minHeight: '48px',
+                            fontSize: '18px',
                             fontWeight: 'bold',
+                            color: 'rgb(41, 41, 46)',
+                            border: 'none',
 
                             '&:hover': {
-                                backgroundColor: 'rgba(41, 41, 46, .9)',
+                                backgroundColor: 'rgba(255, 212, 31, .7)',
+                                border: 'none',
                             }
 
                             // '&:hover': {
@@ -215,23 +219,25 @@ function Login() {
                         }}
                         onClick={handleLogin}
                     >
-                        LOG IN
+                        로그인하기
                     </Button>
 
                     <Button
                         fullWidth
-                        variant="contained"
+                        variant="outlined"
                         sx={{
                             mt: 1,
                             mb: 2,
                             backgroundColor: 'transparent',
                             color : 'rgb(41, 41, 46)',
                             border: '1px solid rgb(41, 41, 46)',
-                            minHeight: '40px',
+                            minHeight: '48px',
+                            fontSize: '18px',
                             fontWeight: 'bold',
 
                             '&:hover': {
                                 backgroundColor: 'rgba(0, 0, 0, .1)',
+                                border: '1px solid rgb(41, 41, 46)',
                             }
 
                             // '&:hover': {
@@ -242,7 +248,7 @@ function Login() {
                         component={Link}
                         to={'/signup'}
                     >
-                        SIGN UP <ArrowForwardIosIcon sx={{fontSize: '16px'}}/>
+                        회원가입
                     </Button>
 
                 </Box>

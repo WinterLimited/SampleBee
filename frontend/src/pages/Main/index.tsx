@@ -5,6 +5,7 @@ import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 
 // Import Components
 import ImageCarousel from "./ImageCarousel";
+import axios from "../../api/axiosConfig";
 
 function Main() {
     const images = [
@@ -22,6 +23,24 @@ function Main() {
 
         return () => clearInterval(interval);
     }, [images.length]);
+
+    // 접속률 기록
+    useEffect(() => {
+        const checkUserVisit = async () => {
+            const userVisited = localStorage.getItem('userVisited');
+
+            if (!userVisited) {
+                try {
+                    await axios.post('/api/record/visit');
+                    localStorage.setItem('userVisited', 'true');
+                } catch (error) {
+                    console.error('Error recording visit:', error);
+                }
+            }
+        };
+
+        checkUserVisit();
+    }, []);
 
     return (
 

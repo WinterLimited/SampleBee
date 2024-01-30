@@ -151,8 +151,8 @@ function ImageCarousel() {
                 <Grid container spacing={2} sx={{ width: '100%', height: '100%' }}>
                     {carouselItems.slice(activePageIndex * itemsToShow, (activePageIndex + 1) * itemsToShow).map((item, index) => (
                         <Grid item xs={2} key={index}>
-                            <img src={item.img} alt={`carousel-image-${index}`} style={{ width: '100%' }} />
-                            <Typography sx={{ textAlign: 'left', mt: 2, fontSize: '16px', fontWeight: 'bold', color: 'rgb(41, 41, 46)' }}>
+                            <div style={{ width: '100%', height: '250px', backgroundColor: 'grey', borderRadius: '15px' }} />
+                            <Typography sx={{ textAlign: 'left', mt: 2, fontSize: '16px', fontWeight: 'bold', color: 'rgb(41, 41, 46)', width: '100%' }}>
                                 {item.text}
                             </Typography>
                             <Typography sx={{ textAlign: 'left', fontSize: '15px', color: 'rgb(148, 148, 148)' }}>

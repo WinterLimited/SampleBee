@@ -37,7 +37,38 @@ app.use(bodyParser.json());
 
 // TODO: 모듈화
 
+// 관리자용 방문 기록 조회 API
+// GET /api/admin/visit
+app.get('/api/admin/visit', async(req, res) => {
+    try {
+        const result = await pool.query('SELECT * FROM visits');
+        res.status(200).json({ success: true, visits: result.rows });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false, message: '서버 오류' });
+    }
+});
+
+// 관리자용 방문 기록 API
+// POST /api/record/visit
+app.post('/api/record/visit', async (req, res) => {
+    try {
+        // 현재 시간을 기록
+        const visitTime = new Date();
+
+        // 'visits' 테이블에 기록 (테이블과 컬럼은 사전에 생성되어 있어야 합니다.)
+        await pool.query('INSERT INTO visits (visit_time) VALUES ($1)', [visitTime]);
+
+        res.status(200).json({ success: true, message: '방문 기록 성공' });
+    } catch (error) {
+        console.error('Error recording visit:', error);
+        res.status(500).json({ success: false, message: '서버 오류' });
+    }
+});
+
+
 // 관리자용 사용자 정보 조회 API
+// GET /api/admin/users
 app.get('/api/admin/users', async (req, res) => {
     // TODO: 관리자 인증 로직 추가
 
