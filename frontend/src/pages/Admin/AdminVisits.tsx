@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Bar } from 'react-chartjs-2';
 import { Chart, registerables } from 'chart.js';
+import {SwalAlertCallBack} from "../../components/Common/SwalAlert";
+import {Box, Typography} from "@mui/material";
 Chart.register(...registerables);
 
 // 방문 기록 타입 정의
@@ -24,19 +26,37 @@ interface ChartData {
 
 function AdminVisits() {
     const [visitData, setVisitData] = useState<ChartData>({ labels: [], datasets: [] });
+    const [loading, setLoading] = useState(true);
 
     const fetchVisits = async () => {
         try {
             const response = await axios.get('/api/admin/visit');
             const data: ChartData = processVisitData(response.data.visits);
             setVisitData(data);
+            setLoading(false);
         } catch (error) {
             console.error('방문 데이터를 가져오는 데 실패했습니다:', error);
         }
     };
 
     useEffect(() => {
-        fetchVisits();
+
+        // 관리자 여부 확인
+        // TODO: redux로 변경
+        if (localStorage.getItem('user')) {
+            const user = JSON.parse(localStorage.getItem('user') || '{}');
+            if(user.id === 'admin' && user.name == '관리자' && user.email == 'admin@admin') {
+                fetchVisits();
+            } else {
+                SwalAlertCallBack('error', '관리자만 접근 가능합니다.', '로그인 페이지로 이동합니다.', () => {
+                    window.location.href = '/';
+                });
+            }
+        } else {
+            SwalAlertCallBack('error', '관리자만 접근 가능합니다.', '로그인 페이지로 이동합니다.', () => {
+                window.location.href = '/';
+            });
+        }
     }, []);
 
     // 방문 데이터를 처리하는 함수
@@ -63,11 +83,38 @@ function AdminVisits() {
         };
     };
 
+    if (loading) {
+        return <div>로딩 중...</div>;
+    }
+
+
     return (
-        <div>
-            <h2>방문 기록 그래프</h2>
+        <Box
+            sx={{
+                boxSizing: 'border-box',
+                width: '80%',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',
+                margin: '0 auto',
+            }}
+        >
+            <Typography
+                variant="h4"
+                component="h3"
+                sx={{
+                    color: 'rgb(41, 41, 46)',
+                    fontSize: '28px',
+                    fontWeight: 'bold',
+                    mt: 3,
+                    mb: 3
+                }}
+            >
+                관리자 페이지 - 방문자 기록
+            </Typography>
             <Bar data={visitData} />
-        </div>
+        </Box>
     );
 }
 
