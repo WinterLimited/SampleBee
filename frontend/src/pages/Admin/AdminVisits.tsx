@@ -116,13 +116,19 @@ function AdminVisits() {
             </Typography>
             <Bar data={visitData} />
 
-            {/* 여기에 테이블 추가 */}
+            {/* 테이블 추가 */}
             <TableContainer component={Paper} sx={{ mt: 4, maxWidth: 700 }}>
                 <Table aria-label="방문 기록 테이블">
                     <TableHead>
                         <TableRow>
                             <TableCell>ID</TableCell>
                             <TableCell align="right">방문 시간</TableCell>
+                        </TableRow>
+                        {/* 총 방문자 수를 표시하는 행 추가 */}
+                        <TableRow>
+                            <TableCell colSpan={2}>
+                                총 방문자 수: {visits.length}
+                            </TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
