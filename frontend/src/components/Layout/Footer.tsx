@@ -101,7 +101,7 @@ function Footer() {
                             }}
                         >
                             <Typography variant="body1" sx={{ lineHeight: 1.5 }}>
-                                대표자: 채형진<br />
+                                한살터울(한양대학교 창업교육센터 소속)<br />
                                 전화번호: 010-5503-8718
                             </Typography>
                         </Box>
