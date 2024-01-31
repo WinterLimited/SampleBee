@@ -16,7 +16,7 @@ dotenv.config();
 const { fileURLToPath } = url;
 
 const app = express();
-const port = 3000;
+const port = 80;
 const { Pool } = pkg;
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
