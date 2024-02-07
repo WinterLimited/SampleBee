@@ -1,6 +1,6 @@
 import { IsString, MinLength, MaxLength } from 'class-validator';
 
-export class AuthCredentialsDto {
+export class SignInCredentialsDto {
     @IsString()
     @MinLength(4)
     @MaxLength(20)

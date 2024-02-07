@@ -1,4 +1,4 @@
-import {BaseEntity, Column, PrimaryGeneratedColumn} from "typeorm";
+import {BaseEntity, Column, CreateDateColumn, PrimaryGeneratedColumn, UpdateDateColumn} from "typeorm";
 import {UserStatus} from "./enums/user-status.enum";
 import {UserRole} from "./enums/user-role.enum";
 
@@ -15,8 +15,8 @@ export class User extends BaseEntity {
     providerId: string;
 
     // oAuth는 사용자가 소셜 로그인을 사용하여 로그인할 때 사용되는 인증 토큰입니다.
-    @Column()
-    oAuth: string;
+    @Column({ nullable: true})
+    oAuth: string | null;
 
     @Column()
     email: string;
@@ -30,13 +30,13 @@ export class User extends BaseEntity {
     @Column()
     occupation: string;
 
-    @Column()
+    @CreateDateColumn()
     createdAt: Date;
 
-    @Column()
+    @UpdateDateColumn()
     updatedAt: Date;
 
-    @Column()
+    @Column({ nullable: true })
     bannedAt: Date | null;
 
     @Column({

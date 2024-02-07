@@ -1,10 +1,12 @@
 import {ConflictException, Injectable, InternalServerErrorException, UnauthorizedException} from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { AuthCredentialsDto } from './dto/auth-credentials.dto';
-import { User } from './user.entity';
+import {InjectRepository} from '@nestjs/typeorm';
+import {Repository} from 'typeorm';
+import {SignInCredentialsDto} from './dto/sign-in-credentials.dto';
+import {User} from './user.entity';
 import * as bcrypt from 'bcrypt';
-import { JwtService } from '@nestjs/jwt';
+import {JwtService} from '@nestjs/jwt';
+import {SignUpCredentialsDto} from "./dto/sign-up-credentials.dto";
+import {UserStatus} from "./enums/user-status.enum";
 
 @Injectable()
 export class AuthService {
@@ -12,29 +14,40 @@ export class AuthService {
         @InjectRepository(User)
         private userRepository: Repository<User>,
         private jwtService: JwtService
-    ) { }
+    ) {}
 
-    async signUp(authCredentialsDto: AuthCredentialsDto): Promise<void> {
-        const { username, password } = authCredentialsDto;
+    // POST /auth/signup
+    async signUp(authSignUpCredentialsDto: SignUpCredentialsDto): Promise<void> {
+        const { email, password, username, providerId, oAuth, phone, occupation } = authSignUpCredentialsDto;
+
+        // Duplicate email check
+        const existingUser = await this.userRepository.findOneBy({ email });
+        if (existingUser) {
+            throw new ConflictException('이미 존재하는 계정');
+        }
 
         const salt = await bcrypt.genSalt();
         const hashedPassword = await bcrypt.hash(password, salt);
 
-        const user = this.userRepository.create({ username, password: hashedPassword });
+        const user = this.userRepository.create({
+            email,
+            password: hashedPassword,
+            username,
+            providerId,
+            oAuth,
+            phone,
+            occupation
+        });
 
         try {
-            await this.userRepository.save(user); // this.userRepository를 직접 사용합니다.
+            await this.userRepository.save(user);
         } catch (error) {
-            if(error.code === '23505') {
-                // duplicate email
-                throw new ConflictException('이미 존재하는 계정');
-            } else {
-                throw new InternalServerErrorException();
-            }
+            throw new InternalServerErrorException();
         }
     }
 
-    async signIn(authCredentialsDto: AuthCredentialsDto): Promise<{accessToken: string}> {
+    // POST /auth/signin
+    async signIn(authCredentialsDto: SignInCredentialsDto): Promise<{accessToken: string}> {
         const { email, password } = authCredentialsDto;
         const user = await this.userRepository.findOneBy({ email });
 
@@ -48,7 +61,31 @@ export class AuthService {
 
             return { accessToken };
         }  else {
-            throw new UnauthorizedException('login failed');
+            throw new UnauthorizedException('로그인 실패');
+        }
+    }
+
+    // GET /auth/check-email
+    async checkEmail(email: string): Promise<boolean> {
+        const user = await this.userRepository.findOneBy({ email });
+        return !!user;
+    }
+
+    // POST /auth/delete
+    async deleteUser(id: number): Promise<void> {
+        const user = await this.userRepository.findOneBy({id});
+
+        if(!user) {
+            throw new UnauthorizedException('사용자를 찾을 수 없습니다.');
+        }
+
+        user.status = UserStatus.BANNED;
+        user.bannedAt = new Date();
+
+        try {
+            await this.userRepository.save(user);
+        } catch (error) {
+            throw new InternalServerErrorException();
         }
     }
 
