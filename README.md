@@ -3,4 +3,4 @@
 ## Demo Server
 
 - Frontend: ReactJS / TypeScript
-- Backend: NodeJS / TypeScript
+- Backend: NestJS / TypeScript

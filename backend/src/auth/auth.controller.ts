@@ -27,5 +27,4 @@ export class AuthController {
     deleteUser(@Body('id') id: number): Promise<void> {
         return this.authService.deleteUser(id);
     }
-
 }

@@ -192,7 +192,3 @@ app.listen(port, () => {
 });
 
 export default app;
-
-
-우선 node.js로 작성된 임시 서버 코드가 있는데 nest.js 로 리팩토링하려고 해
-도와줄 수 있을까?

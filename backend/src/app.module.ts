@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { AuthModule } from './auth/auth.module';
 import {ConfigModule} from "@nestjs/config";
+import { VisitModule } from './visit/visit.module';
 
 @Module({
   imports: [
@@ -10,6 +11,8 @@ import {ConfigModule} from "@nestjs/config";
       ConfigModule.forRoot({
         isGlobal: true, // 전역적으로 ConfigModule 사용
       }),
+
+      VisitModule,
   ],
   controllers: [],
   providers: [],
