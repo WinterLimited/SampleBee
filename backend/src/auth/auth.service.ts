@@ -79,8 +79,7 @@ export class AuthService {
             throw new UnauthorizedException('사용자를 찾을 수 없습니다.');
         }
 
-        user.status = UserStatus.BANNED;
-        user.bannedAt = new Date();
+        user.status = UserStatus.DELETED;
 
         try {
             await this.userRepository.save(user);

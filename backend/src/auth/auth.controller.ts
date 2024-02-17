@@ -1,7 +1,8 @@
-import {Body, Controller, Get, Post, ValidationPipe} from '@nestjs/common';
+import {Body, Controller, Delete, Get, Post, Request, UseGuards, ValidationPipe} from '@nestjs/common';
 import {AuthService} from "./auth.service";
 import {SignInCredentialsDto} from "./dto/sign-in-credentials.dto";
 import {SignUpCredentialsDto} from "./dto/sign-up-credentials.dto";
+import {JwtAuthGuard} from "../common/jwt/jwt-auth.guard";
 
 @Controller('auth')
 export class AuthController {
@@ -23,8 +24,10 @@ export class AuthController {
         return this.authService.checkEmail(email);
     }
 
-    @Post('/delete')
-    deleteUser(@Body('id') id: number): Promise<void> {
-        return this.authService.deleteUser(id);
+    @Delete('/delete')
+    @UseGuards(JwtAuthGuard)
+    deleteUser(@Request() req): Promise<void> {
+        const userId = req.user.id;
+        return this.authService.deleteUser(userId);
     }
 }

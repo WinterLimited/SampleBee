@@ -4,13 +4,12 @@ export class Visit extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
+    @Column()
+    userAgent: string;
+
+    @Column()
+    pageUrl: string;
+
     @CreateDateColumn()
     createdAt: Date;
-
-    // 접속 기기 및 경로 통계 시 사용
-    // @Column()
-    // userAgent: string;
-    //
-    // @Column()
-    // pageUrl: string;
 }

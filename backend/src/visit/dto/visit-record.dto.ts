@@ -1,8 +1,15 @@
-import {IsDate} from "class-validator";
+import {IsDate, IsOptional, IsString} from "class-validator";
 
 export class VisitRecordDto {
 
     id: number;
+
+    @IsString()
+    userAgent: string;
+
+    @IsString()
+    @IsOptional()
+    pageUrl: string;
 
     @IsDate()
     createdAt: Date;

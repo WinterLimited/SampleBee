@@ -17,6 +17,8 @@ export class VisitService {
         const visitRecordDto = visitRecord.map((visit) => {
             const visitRecordDto: VisitRecordDto = {
                 id: visit.id,
+                userAgent: visit.userAgent,
+                pageUrl: visit.pageUrl,
                 createdAt: visit.createdAt
             };
             return visitRecordDto;
