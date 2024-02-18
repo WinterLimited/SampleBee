@@ -11,6 +11,7 @@ import {typeORMConfig} from "./config/typeorm.config";
       // ConfigModule을 AppModule에 추가
       ConfigModule.forRoot({
           isGlobal: true, // 전역적으로 ConfigModule 사용
+          envFilePath: '.env', // 환경변수 파일 경로
       }),
       // TypeOrmModule을 AppModule에 추가
       TypeOrmModule.forRoot(typeORMConfig),
