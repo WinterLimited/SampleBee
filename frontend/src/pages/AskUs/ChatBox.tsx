@@ -1,6 +1,5 @@
-// ChatBox.tsx
 import React, { useState, useRef, useEffect } from 'react';
-import { Box, Typography, TextField, Button } from '@mui/material';
+import {Box, Typography, TextField, Button, CircularProgress} from '@mui/material';
 
 interface Message {
     id: number;
@@ -9,6 +8,7 @@ interface Message {
 }
 
 const ChatBox: React.FC = () => {
+    const [loading, setLoading] = useState<boolean>(false);
     const [messages, setMessages] = useState<Message[]>([]);
     const [inputValue, setInputValue] = useState('');
     const messagesEndRef = useRef<null | HTMLDivElement>(null);
@@ -21,13 +21,27 @@ const ChatBox: React.FC = () => {
 
     const sendMessage = (text: string) => {
         if (!text.trim()) return;
+
         const newMessage: Message = {
             id: Date.now(), // Unique ID for each message
             text,
             sender: 'user',
         };
+
+        const botMessage: Message = {
+            id: Date.now(),
+            text,
+            sender: 'bot',
+        };
         setMessages((prevMessages) => [...prevMessages, newMessage]);
-        // Here you would call your bot service to get a response
+        setLoading(true);
+
+        // Simulate bot response
+        setTimeout(() => {
+            setMessages((prevMessages) => [...prevMessages, botMessage]);
+            setLoading(false);
+        }, 1500);
+
     };
 
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -40,23 +54,76 @@ const ChatBox: React.FC = () => {
     };
 
     return (
-        <Box sx={{ width: '100%', height: '500px', overflowY: 'auto', p: 2, border: '1px solid #ccc', borderRadius: '8px', backgroundColor: '#f5f5f5', display: 'flex', flexDirection: 'column' }}>
-            {messages.map((message) => (
-                <Typography key={message.id} sx={{ alignSelf: message.sender === 'user' ? 'flex-end' : 'flex-start', backgroundColor: message.sender === 'user' ? '#blue' : '#ddd', color: message.sender === 'user' ? 'white' : 'black', borderRadius: '20px', padding: '10px', margin: '5px', maxWidth: '80%' }}>
-                    {message.text}
-                </Typography>
-            ))}
-            <div ref={messagesEndRef} />
-            <Box sx={{ display: 'flex', mt: 'auto' }}>
+        <Box sx={{ width: '100%', height: '600px', display: 'flex', flexDirection: 'column', border: '1px solid #e0e0e0', borderRadius: '8px', backgroundColor: '#fff' }}>
+            <Box sx={{ flexGrow: 1, overflowY: 'auto', p: 2 }}>
+                {messages.map((message) => (
+                    <Box key={message.id} sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: message.sender === 'user' ? 'flex-end' : 'flex-start',
+                        margin: '5px 0',
+                    }}>
+                        <Typography sx={{
+                            mb: 1,
+                            fontSize: '0.75rem',
+                            color: 'rgb(100, 100, 100)',
+                        }}>
+                            {message.sender === 'user' ? '나' : '샘플비 챗봇'}
+                        </Typography>
+                        <Typography sx={{
+                            backgroundColor: message.sender === 'user' ? 'rgb(255, 212, 31)' : 'rgb(247, 247, 247)',
+                            color: 'rgb(41, 41, 46)',
+                            borderRadius: '8px',
+                            padding: '10px',
+                            maxWidth: '80%',
+                        }}>
+                            {message.text}
+                        </Typography>
+                    </Box>
+                ))}
+                {loading && (
+                    <Box sx={{
+                        display: 'flex',
+                        justifyContent: 'flex-start', // 챗봇 메시지와 같이 왼쪽 정렬
+                        margin: '5px 0',
+                    }}>
+                        <CircularProgress size={20} /> {/* 로딩 크기 조절 */}
+                        <Typography sx={{ ml: 2, color: 'rgb(100, 100, 100)', fontSize: '14px' }}>
+                            로딩 중...
+                        </Typography>
+                    </Box>
+                )}
+                <div ref={messagesEndRef} />
+            </Box>
+            <Box sx={{ borderTop: '1px solid #e0e0e0', p: 1, display: 'flex', backgroundColor: 'rgb(247, 247, 247)' }}>
                 <TextField
                     fullWidth
                     variant="outlined"
-                    placeholder="Type your message..."
+                    placeholder="궁금한 점들을 물어보세요!"
                     value={inputValue}
                     onChange={handleInputChange}
                     onKeyPress={(e) => e.key === 'Enter' && handleSend()}
+                    sx={{ mr: 1 }}
                 />
-                <Button onClick={handleSend} sx={{ ml: 1 }}>Send</Button>
+                <Button
+                    variant="outlined"
+                    onClick={handleSend}
+                    disabled={!inputValue.trim()}
+                    sx={{
+                        backgroundColor: !inputValue.trim() ? 'rgb(249, 249, 249)' : 'rgb(255, 212, 31)',
+                        minHeight: '48px',
+                        fontWeight: 'bold',
+                        color: 'rgb(41, 41, 46)',
+                        border: 'none',
+
+                        '&:hover': {
+                            backgroundColor: 'rgba(255, 212, 31, .7)',
+                            border: 'none',
+                        }
+                    }}
+                >
+                    전송
+                </Button>
             </Box>
         </Box>
     );

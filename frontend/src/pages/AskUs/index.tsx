@@ -23,14 +23,14 @@ const AskUs: React.FC = () => {
                 </Typography>
                 <Box
                     sx={{
-                        width: '100%', // 챗봇 컴포넌트의 너비를 조정하려면 이 값을 변경하세요.
-                        height: '500px', // 챗봇 컴포넌트의 높이를 조정하려면 이 값을 변경하세요.
-                        backgroundColor: '#f5f5f5', // 챗봇 컴포넌트의 배경색을 조정하려면 이 값을 변경하세요.
+                        width: '100%',
+                        height: '600px',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
                         borderRadius: '8px',
                     }}
+                    mt={2}
                 >
                     <ChatBox />
                 </Box>
