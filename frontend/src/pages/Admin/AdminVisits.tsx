@@ -4,6 +4,7 @@ import { Bar } from 'react-chartjs-2';
 import { Chart, registerables } from 'chart.js';
 import {SwalAlertCallBack} from "../../components/Common/SwalAlert";
 import {Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography} from "@mui/material";
+import {useNavigate} from "react-router-dom";
 Chart.register(...registerables);
 
 // 방문 기록 타입 정의
@@ -25,6 +26,7 @@ interface ChartData {
 }
 
 function AdminVisits() {
+    const navigate = useNavigate();
     const [visitData, setVisitData] = useState<ChartData>({ labels: [], datasets: [] });
     const [visits, setVisits] = useState<Visit[]>([]);
     const [loading, setLoading] = useState(true);
@@ -52,12 +54,12 @@ function AdminVisits() {
                 fetchVisits();
             } else {
                 SwalAlertCallBack('error', '관리자만 접근 가능합니다.', '로그인 페이지로 이동합니다.', () => {
-                    window.location.href = '/';
+                    navigate('/')
                 });
             }
         } else {
             SwalAlertCallBack('error', '관리자만 접근 가능합니다.', '로그인 페이지로 이동합니다.', () => {
-                window.location.href = '/';
+                navigate('/')
             });
         }
     }, []);

@@ -16,7 +16,7 @@ import {
     DialogActions,
     FormControlLabel, Checkbox, IconButton
 } from '@mui/material';
-import { Link } from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 
 // Import axios
 import axios from '../../api/axiosConfig';
@@ -26,6 +26,7 @@ import {SwalAlert, SwalAlertCallBack} from "../../components/Common/SwalAlert";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 
 function SignUp() {
+    const navigate = useNavigate();
     const [id, setId] = useState('');
     const [check, setCheck] = useState(false);
     const [name, setName] = useState('');
@@ -92,7 +93,7 @@ function SignUp() {
                 if (res.data.success) {
                     // 회원가입 성공 시 콜백 함수를 사용하여 로그인 페이지로 이동
                     SwalAlertCallBack('success', '회원가입 성공', '회원가입이 성공적으로 완료되었습니다.', () => {
-                        window.location.href = '/login'; // 로그인 페이지로 이동
+                        navigate('/login');
                     });
                 } else {
                     SwalAlert('error', '회원가입 실패', '회원가입에 실패했습니다.');

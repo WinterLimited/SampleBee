@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import {Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, Box} from '@mui/material';
 import {SwalAlertCallBack} from "../../components/Common/SwalAlert";
+import {useNavigate} from "react-router-dom";
 
 type User = {
     id: string;
@@ -12,6 +13,7 @@ type User = {
 }
 
 function AdminUsers() {
+    const navigate = useNavigate();
     const [users, setUsers] = useState<User[]>([]);
     const [loading, setLoading] = useState(true);
 
@@ -36,12 +38,12 @@ function AdminUsers() {
                 fetchUsers();
             } else {
                 SwalAlertCallBack('error', '관리자만 접근 가능합니다.', '로그인 페이지로 이동합니다.', () => {
-                    window.location.href = '/';
+                    navigate('/')
                 });
             }
         } else {
             SwalAlertCallBack('error', '관리자만 접근 가능합니다.', '로그인 페이지로 이동합니다.', () => {
-                window.location.href = '/';
+                navigate('/')
             });
         }
     }, []);

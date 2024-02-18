@@ -5,7 +5,7 @@ import Main from "../pages/Main";
 import Login from "../pages/Auth/Login";
 import SignUp from "../pages/Auth/SignUp";
 import Logout from "../pages/Auth/Logout";
-
+import AskUs from "../pages/AskUs";
 
 import AdminUsers from "../pages/Admin/AdminUsers";
 import AdminVisits from "../pages/Admin/AdminVisits";
@@ -15,7 +15,7 @@ const userRoutes = [
     { path: "/login", component: <Login /> },
     { path: "/signup", component: <SignUp /> },
     { path: "/logout", component: <Logout /> },
-
+    { path: "/ask-us", component: <AskUs /> },
 ];
 
 const authRoutes = [

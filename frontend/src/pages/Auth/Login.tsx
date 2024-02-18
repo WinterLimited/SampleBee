@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import {Box, TextField, Button, Typography, Container, FormControl, InputLabel} from '@mui/material';
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 
 // import Icon
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
@@ -10,6 +10,7 @@ import {SwalAlert, SwalAlertCallBack} from "../../components/Common/SwalAlert";
 import axios from "../../api/axiosConfig";
 
 function Login() {
+    const navigate = useNavigate();
     const [id, setId] = useState('');
     const [password, setPassword] = useState('');
 
@@ -39,7 +40,7 @@ function Login() {
 
                     // 로그인 성공 CallBack redirection 알림창
                     SwalAlertCallBack('success', '로그인 성공', '로그인이 완료되었습니다.', () => {
-                        window.location.href = '/';
+                        navigate('/');
                     });
                 } else {
                     SwalAlert('error', '로그인 실패', '아이디 또는 비밀번호를 확인해주세요.');

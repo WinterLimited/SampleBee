@@ -15,8 +15,10 @@ import {
 // Import Alert
 import {SwalAlert, SwalAlertCallBack, SwalConfirm} from "../../components/Common/SwalAlert";
 import axios from "../../api/axiosConfig";
+import {useNavigate} from "react-router-dom";
 
 function Footer() {
+    const navigate = useNavigate();
     const [openTermsDialog, setOpenTermsDialog] = React.useState(false);
     const [openPrivacyDialog, setOpenPrivacyDialog] = React.useState(false);
 
@@ -38,7 +40,7 @@ function Footer() {
                     if (response.data.success) {
                         SwalAlertCallBack('success', '회원 탈퇴', '회원 탈퇴가 완료되었습니다.', () => {
                             localStorage.removeItem('user');
-                            window.location.href = '/';
+                            navigate('/');
                         });
                     }
                 } catch (error) {

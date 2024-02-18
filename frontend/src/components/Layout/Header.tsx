@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import { AppBar, Toolbar, Typography, Button, Box, Container } from '@mui/material';
 
 // Login 버튼에 Link 적용
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 // Alert
 import { SwalAlert } from '../Common/SwalAlert';
@@ -10,13 +10,19 @@ import { SwalAlert } from '../Common/SwalAlert';
 // Icons
 import ShoppingBagOutlinedIcon from '@mui/icons-material/ShoppingBagOutlined';
 
+// Data
+import { Page, pages } from '../../common/data/Header';
+
 function Header() {
+    const navigate = useNavigate();
     const [login, setLogin] = useState<boolean>(false);
     const [selectedMenu, setSelectedMenu] = useState<string>('');
 
-    const pages = ['Products', 'Partner Company', 'Brands'];
-
-    const handleMenuClick = (page : string) => {
+    const handleMenuClick = (page: Page) => {
+        if(page.name === 'Ask Us') {
+            navigate(page.link);
+            return;
+        }
         // 페이지 준비중 문구
         SwalAlert('info', '준비중', '페이지 준비중입니다.');
     };
@@ -74,7 +80,7 @@ function Header() {
                         <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
                             {pages.map((page) => (
                                 <Button
-                                    key={page}
+                                    key={page.name}
                                     onClick={() => handleMenuClick(page)}
                                     sx={{
                                         color: 'black',
@@ -87,7 +93,7 @@ function Header() {
                                         },
                                     }}
                                 >
-                                    {page}
+                                    {page.name}
                                 </Button>
                             ))}
                         </Box>
@@ -155,7 +161,7 @@ function Header() {
 
                                     }
                                 }}
-                                onClick={() => handleMenuClick('Cart')}
+                                onClick={() => handleMenuClick({ name: 'Cart', link: '/cart'})}
                             >
                                 <ShoppingBagOutlinedIcon />
                             </Button>
