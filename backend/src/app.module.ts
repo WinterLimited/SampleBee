@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 import { AuthModule } from './auth/auth.module';
-import { ConfigModule } from "@nestjs/config";
+import {ConfigModule, ConfigService} from "@nestjs/config";
 import { VisitModule } from './visit/visit.module';
 import { TypeOrmModule } from "@nestjs/typeorm";
-import {typeORMConfig} from "./config/typeorm.config";
+import {getTypeOrmConfig} from "./config/typeorm.config";
 
 @Module({
   imports: [
@@ -11,10 +11,13 @@ import {typeORMConfig} from "./config/typeorm.config";
       // ConfigModule을 AppModule에 추가
       ConfigModule.forRoot({
           isGlobal: true, // 전역적으로 ConfigModule 사용
-          envFilePath: '.env', // 환경변수 파일 경로
       }),
       // TypeOrmModule을 AppModule에 추가
-      TypeOrmModule.forRoot(typeORMConfig),
+      TypeOrmModule.forRootAsync({
+          imports: [ConfigModule],
+          inject: [ConfigService],
+          useFactory: getTypeOrmConfig,
+      }),
 
       AuthModule,
       VisitModule,
