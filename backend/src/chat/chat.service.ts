@@ -1,12 +1,14 @@
 // chat.service.ts
 import { Injectable } from '@nestjs/common';
 import { spawn } from 'child_process';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class ChatService {
     async runChatScript(question: string): Promise<string> {
         return new Promise<string>((resolve, reject) => {
-            const pythonProcess = spawn('python', ['../../../bot/main.py', question]);
+            const pythonScriptPath = process.env.PYTHON_SCRIPT_PATH;
+            const pythonProcess = spawn('python', [pythonScriptPath, question]);
 
             let result = '';
             pythonProcess.stdout.on('data', (data) => {
@@ -21,7 +23,7 @@ export class ChatService {
                 if (code === 0) {
                     resolve(result);
                 } else {
-                    reject(`Python script exited with code ${code}`);
+                    reject(`파이썬 스크립트 종료 코드: ${code}`);
                 }
             });
         })

@@ -2,6 +2,10 @@
 import { ConfigService } from '@nestjs/config';
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 
+// import Entities
+import {User} from "../auth/user.entity";
+import {Visit} from "../visit/visit.entity";
+
 export const getTypeOrmConfig = (configService: ConfigService): TypeOrmModuleOptions => ({
     type: 'postgres',
     host: configService.get<string>('DB_HOST'),
@@ -9,6 +13,6 @@ export const getTypeOrmConfig = (configService: ConfigService): TypeOrmModuleOpt
     username: configService.get<string>('DB_USER'),
     password: configService.get<string>('DB_PASSWORD'),
     database: configService.get<string>('DB_DATABASE'),
-    entities: [__dirname + '/../**/*.entity{.ts,.js}'],
+    entities: [User, Visit],
     synchronize: true,
 });

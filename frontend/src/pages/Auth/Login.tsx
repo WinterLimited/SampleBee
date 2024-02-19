@@ -7,11 +7,16 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
 // import Alert
 import {SwalAlert, SwalAlertCallBack} from "../../components/Common/SwalAlert";
+
+// import axios
 import axios from "../../api/axiosConfig";
+
+// import validation
+import {emailRegex} from "../../common/data/validation";
 
 function Login() {
     const navigate = useNavigate();
-    const [id, setId] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
     const handleMenuClick = (page : string) => {
@@ -22,15 +27,19 @@ function Login() {
     const handleLogin = () => {
 
         // Validation
-        if (id === '' || password === '') {
-            SwalAlert('warning', '입력 오류', '아이디와 비밀번호를 입력해주세요.');
+        if (email === '' || password === '') {
+            SwalAlert('warning', '입력 오류', '이메일과 비밀번호를 입력해주세요.');
             return;
         } else if (password.length < 8) {
             SwalAlert('warning', '입력 오류', '비밀번호는 8자리 이상이어야 합니다.');
             return;
+        } else if (!emailRegex.test(email)) {
+            console.log(email);
+            SwalAlert('warning', '입력 오류', '이메일 형식이 올바르지 않습니다.');
+            return;
         } else {
-            axios.post('/api/auth/login', {
-                id: id,
+            axios.post('/api/auth/signin', {
+                email: email,
                 password: password,
             }).then((response) => {
                 if (response.data.success) {
@@ -77,7 +86,7 @@ function Login() {
 
                     <FormControl fullWidth>
                         <InputLabel
-                            htmlFor="id"
+                            htmlFor="email"
                             sx={{
                                 color: 'black',
                                 fontSize: '15px',
@@ -88,19 +97,19 @@ function Login() {
                                 top: '-5px',
                                 left: '-10px',
                             }}>
-                            아이디
+                            이메일
                         </InputLabel>
                         <TextField
                             margin="normal"
                             required
                             fullWidth
-                            id="id"
-                            name="id"
-                            autoComplete="id"
+                            id="email"
+                            name="email"
+                            autoComplete="email"
                             autoFocus
-                            value={id}
-                            onChange={(e) => setId(e.target.value)}
-                            placeholder={"아이디를 입력해주세요."}
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            placeholder={"이메일을 입력해주세요."}
                             InputProps={{
                                 sx: {
                                     // 포커스 시 테두리 제거
@@ -110,7 +119,7 @@ function Login() {
                                     },
 
                                     backgroundColor: 'white',
-                                    border: id === "" ? '1px solid rgb(249, 249, 249)' : '1px solid rgb(41, 41, 46)',
+                                    border: email === "" ? '1px solid rgb(249, 249, 249)' : '1px solid rgb(41, 41, 46)',
                                     minWidth: '175px',
                                     minHeight: '40px',
                                     fontSize: '14px',
@@ -179,7 +188,7 @@ function Login() {
                             }}
                             onClick = {() => handleMenuClick('findId')}
                         >
-                            아이디 찾기
+                            이메일 찾기
                         </Typography>
                         <Typography
                             variant="body2"

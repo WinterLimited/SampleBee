@@ -24,10 +24,10 @@ import axios from '../../api/axiosConfig';
 // import Alert
 import {SwalAlert, SwalAlertCallBack} from "../../components/Common/SwalAlert";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import {emailRegex} from "../../common/data/validation";
 
 function SignUp() {
     const navigate = useNavigate();
-    const [id, setId] = useState('');
     const [check, setCheck] = useState(false);
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
@@ -43,37 +43,36 @@ function SignUp() {
     const [openPrivacyDialog, setOpenPrivacyDialog] = useState(false);
 
 
-    const changeId = async (id: string) => {
-        setId(id);
+    const changeEmail = async (email: string) => {
+        setEmail(email);
 
-        if (id.length >= 6) {
+        // email 형식이 올바르면 중복 체크
+        if (emailRegex.test(email) && email.length >= 6) {
             try {
-                const response = await axios.get(`/api/auth/checkid/${id}`);
-                if (response.data.success) {
+                const response = await axios.get(`/api/auth/check-email/${email}`);
+                if (!response.data) {
                     setCheck(true);
-                    // 추가적인 성공 메시지나 로직
                 } else {
                     setCheck(false);
-                    SwalAlert('error', '중복된 아이디', '이미 사용 중인 아이디입니다.');
                 }
             } catch (error) {
                 // 서버 에러 처리
                 SwalAlert('error', '서버 오류', '서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
             }
         } else {
-            setCheck(false);
+            return;
         }
     }
-
-
 
     const handleSignUp = () => {
 
         // Validation
-        if (id === '' || name === '' || email === '' || phone === '' || password === '' || confirmPassword === '' || occupation === '') {
+        if (name === '' || email === '' || phone === '' || password === '' || confirmPassword === '' || occupation === '') {
             SwalAlert('warning', '입력 오류', '모든 항목을 입력해주세요.');
-        } else if (id.length < 6) {
-            SwalAlert('warning', '입력 오류', '아이디는 6자 이상이어야 합니다.');
+        } else if (!emailRegex.test(email)) {
+            SwalAlert('warning', '입력 오류', '이메일 형식이 올바르지 않습니다.');
+        } else if (!check) {
+            SwalAlert('warning', '중복된 아이디', '이미 사용 중인 아이디입니다.');
         } else if (password.length < 8) {
             SwalAlert('warning', '입력 오류', '비밀번호는 8자 이상이어야 합니다.');
         } else if (password !== confirmPassword) {
@@ -83,11 +82,11 @@ function SignUp() {
         } else {
 
             axios.post('/api/auth/signup', {
-                id: id,
-                name: name,
                 email: email,
-                phone: phone,
                 password: password,
+                username: name,
+                phone: phone,
+                providerId: 'samplebee',
                 occupation: occupation,
             }).then((res) => {
                 if (res.data.success) {
@@ -128,39 +127,42 @@ function SignUp() {
                          borderRadius: '10px',
                      }}>
 
-                    <FormControl fullWidth error={!check && id.length >= 6}>
+                    <FormControl fullWidth>
                         <InputLabel
-                            htmlFor="id"
+                            htmlFor="email"
                             sx={{
                                 color: 'black',
                                 fontSize: '15px',
                                 fontWeight: 'bold',
+
+                                // Input의 외부에 존재하도록 설정
                                 position: 'relative',
                                 top: '-5px',
                                 left: '-10px',
-                            }}
-                        >
-                            아이디
+                            }}>
+                            이메일
                         </InputLabel>
                         <TextField
                             margin="normal"
                             required
                             fullWidth
-                            id="id"
-                            name="id"
-                            autoComplete="id"
+                            id="email"
+                            name="email"
+                            autoComplete="email"
                             autoFocus
-                            value={id}
-                            onChange={(e) => changeId(e.target.value)}
-                            placeholder="아이디를 입력해주세요."
+                            value={email}
+                            onChange={(e) => changeEmail(e.target.value)}
+                            placeholder={"이메일을 입력해주세요."}
                             InputProps={{
                                 sx: {
+                                    // 포커스 시 테두리 제거
                                     '&.Mui-focused fieldset': {
                                         outline: 'none',
-                                        borderColor: 'transparent',
+                                        borderColor: 'transparent',  // 테두리 색 변경
                                     },
+
                                     backgroundColor: 'white',
-                                    border: id === "" ? '1px solid rgb(249, 249, 249)' : '1px solid rgb(41, 41, 46)',
+                                    border: email === "" ? '1px solid rgb(249, 249, 249)' : '1px solid rgb(41, 41, 46)',
                                     minWidth: '175px',
                                     minHeight: '40px',
                                     fontSize: '14px',
@@ -168,14 +170,13 @@ function SignUp() {
                             }}
                         />
                         {
-                            id.length >= 6 && (
+                            email.length >= 6 && (
                                 <FormHelperText>
-                                    {check ? '사용 가능한 아이디입니다.' : '이미 사용 중인 아이디입니다.'}
+                                    {check ? '사용 가능한 이메일입니다.' : '이미 사용 중인 아이디입니다.'}
                                 </FormHelperText>
                             )
                         }
                     </FormControl>
-
 
                     <FormControl fullWidth>
                         <InputLabel
@@ -213,50 +214,6 @@ function SignUp() {
 
                                     backgroundColor: 'white',
                                     border: name === "" ? '1px solid rgb(249, 249, 249)' : '1px solid rgb(41, 41, 46)',
-                                    minWidth: '175px',
-                                    minHeight: '40px',
-                                    fontSize: '14px',
-                                },
-                            }}
-                        />
-                    </FormControl>
-
-                    <FormControl fullWidth>
-                        <InputLabel
-                            htmlFor="email"
-                            sx={{
-                                color: 'black',
-                                fontSize: '15px',
-                                fontWeight: 'bold',
-
-                                // Input의 외부에 존재하도록 설정
-                                position: 'relative',
-                                top: '-5px',
-                                left: '-10px',
-                            }}>
-                            이메일
-                        </InputLabel>
-                        <TextField
-                            margin="normal"
-                            required
-                            fullWidth
-                            id="email"
-                            name="email"
-                            autoComplete="email"
-                            autoFocus
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            placeholder={"이메일을 입력해주세요."}
-                            InputProps={{
-                                sx: {
-                                    // 포커스 시 테두리 제거
-                                    '&.Mui-focused fieldset': {
-                                        outline: 'none',
-                                        borderColor: 'transparent',  // 테두리 색 변경
-                                    },
-
-                                    backgroundColor: 'white',
-                                    border: email === "" ? '1px solid rgb(249, 249, 249)' : '1px solid rgb(41, 41, 46)',
                                     minWidth: '175px',
                                     minHeight: '40px',
                                     fontSize: '14px',

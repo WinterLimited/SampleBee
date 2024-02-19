@@ -1,7 +1,8 @@
-import {BaseEntity, Column, CreateDateColumn, PrimaryGeneratedColumn, UpdateDateColumn} from "typeorm";
+import {BaseEntity, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn} from "typeorm";
 import {UserStatus} from "./enums/user-status.enum";
 import {UserRole} from "./enums/user-role.enum";
 
+@Entity()
 export class User extends BaseEntity {
 
     @PrimaryGeneratedColumn()

@@ -19,8 +19,9 @@ export class AuthController {
         return this.authService.signIn(authSignInCredentialsDto);
     }
 
-    @Get('/check-email')
-    checkEmail(@Body('email') email: string): Promise<boolean> {
+    @Get('/check-email/:email')
+    checkEmail(@Request() req): Promise<boolean> {
+        const email = req.params.email;
         return this.authService.checkEmail(email);
     }
 

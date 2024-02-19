@@ -13,8 +13,8 @@ export class SignUpCredentialsDto {
     password: string;
 
     @IsString()
-    @MinLength(4)
-    @MaxLength(20)
+    @MinLength(2)
+    @MaxLength(10)
     username: string;
 
     @IsString()

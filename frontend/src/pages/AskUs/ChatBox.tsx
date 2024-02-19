@@ -1,6 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
 import {Box, Typography, TextField, Button, CircularProgress} from '@mui/material';
 
+// import axios
+import axios from "../../api/axiosConfig";
+
 interface Message {
     id: number;
     text: string;
@@ -19,29 +22,36 @@ const ChatBox: React.FC = () => {
 
     useEffect(scrollToBottom, [messages]);
 
-    const sendMessage = (text: string) => {
+
+    const sendMessage = async (text: string) => {
         if (!text.trim()) return;
 
         const newMessage: Message = {
-            id: Date.now(), // Unique ID for each message
+            id: Date.now(),
             text,
             sender: 'user',
         };
-
-        const botMessage: Message = {
-            id: Date.now(),
-            text,
-            sender: 'bot',
-        };
         setMessages((prevMessages) => [...prevMessages, newMessage]);
+
         setLoading(true);
 
-        // Simulate bot response
-        setTimeout(() => {
-            setMessages((prevMessages) => [...prevMessages, botMessage]);
+        try {
+            // 백엔드에 메시지 전송
+            const response = await axios.post('/api/chat/message', {
+                message: text,
+            });
+            const botResponse: Message = {
+                id: Date.now(),
+                text: response.data.response, // 백엔드에서 처리된 응답 사용
+                sender: 'bot',
+            };
+            setMessages((prevMessages) => [...prevMessages, botResponse]);
+        } catch (error) {
+            console.error('메시지 전송 실패:', error);
+            // 에러 처리 로직 추가
+        } finally {
             setLoading(false);
-        }, 1500);
-
+        }
     };
 
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
