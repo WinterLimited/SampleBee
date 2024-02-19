@@ -21,7 +21,7 @@ import {User} from "./user.entity";
       }),
       TypeOrmModule.forFeature([User]),
   ],
-  controllers: [AuthController, JwtStrategy],
-  providers: [AuthService, PassportModule],
+  controllers: [AuthController],
+  providers: [AuthService, PassportModule, JwtStrategy],
 })
 export class AuthModule {}

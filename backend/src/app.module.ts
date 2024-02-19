@@ -4,6 +4,7 @@ import {ConfigModule, ConfigService} from "@nestjs/config";
 import { VisitModule } from './visit/visit.module';
 import { TypeOrmModule } from "@nestjs/typeorm";
 import {getTypeOrmConfig} from "./config/typeorm.config";
+import { ChatModule } from './chat/chat.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import {getTypeOrmConfig} from "./config/typeorm.config";
 
       AuthModule,
       VisitModule,
+      ChatModule,
   ],
   controllers: [],
   providers: [],

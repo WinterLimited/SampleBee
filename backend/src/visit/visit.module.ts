@@ -11,7 +11,7 @@ import {Visit} from "./visit.entity";
     PassportModule.register({ defaultStrategy: 'jwt' }),
     TypeOrmModule.forFeature([Visit]),
   ],
-  controllers: [VisitController, JwtStrategy],
-  providers: [VisitService]
+  controllers: [VisitController],
+  providers: [VisitService, JwtStrategy]
 })
 export class VisitModule {}
