@@ -4,4 +4,4 @@ backend/node_modules
 frontend/.env
 frontend/node_modules
 
-bot/.env
+./bot/.env
