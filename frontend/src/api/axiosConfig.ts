@@ -8,10 +8,11 @@ const instance = axios.create({
 });
 
 instance.interceptors.request.use((config) => {
-    // const token = localStorage.getItem('token');
-    // if (token) {
-    //     config.headers['Authorization'] = `Bearer ${token}`;
-    // }
+    // TODO: 변경
+    const token = localStorage.getItem('user');
+    if (token) {
+        config.headers['Authorization'] = `Bearer ${token}`;
+    }
     return config;
 }, (error) => {
     return Promise.reject(error);

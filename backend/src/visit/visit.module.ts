@@ -15,6 +15,7 @@ import { AuthModule } from '../auth/auth.module';
     AuthModule,
   ],
   controllers: [VisitController],
-  providers: [VisitService, JwtStrategy]
+  providers: [VisitService, JwtStrategy],
+  exports: [JwtStrategy, TypeOrmModule.forFeature([Visit]),  PassportModule]
 })
 export class VisitModule {}

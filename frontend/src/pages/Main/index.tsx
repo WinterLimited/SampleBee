@@ -31,7 +31,12 @@ function Main() {
 
             if (!userVisited) {
                 try {
-                    await axios.post('/api/record/visit');
+
+                    // UserAgent, Url
+                    const userAgent = navigator.userAgent;
+                    const pageUrl = window.location.href;
+
+                    await axios.post('/api/visit/record', { userAgent, pageUrl });
                     localStorage.setItem('userVisited', 'true');
                 } catch (error) {
                     console.error('Error recording visit:', error);

@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+
 import {Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, Box} from '@mui/material';
 import {SwalAlertCallBack} from "../../components/Common/SwalAlert";
 import {useNavigate} from "react-router-dom";
 
+// import axios
+import axios from "../../api/axiosConfig";
+
 type User = {
     id: string;
-    name: string;
+    username: string;
     phone: string;
     email: string;
     occupation: string;
@@ -20,7 +23,7 @@ function AdminUsers() {
     const fetchUsers = async () => {
         try {
             const response = await axios.get('/api/admin/users');
-            setUsers(response.data.users);
+            setUsers(response.data.data);
             setLoading(false);
         } catch (error) {
             console.error('사용자 데이터를 가져오는 데 실패했습니다:', error);
@@ -28,18 +31,50 @@ function AdminUsers() {
         }
     };
 
+    function parseJwt(token: string) {
+        try {
+            const base64Url = token.split('.')[1];
+            const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+            const jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
+                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+            }).join(''));
+
+            return JSON.parse(jsonPayload);
+        } catch (e) {
+            console.error('JWT 디코드 중 오류 발생:', e);
+            return null;
+        }
+    }
+
     useEffect(() => {
 
         // 관리자 여부 확인
         // TODO: redux로 변경
         if (localStorage.getItem('user')) {
-            const user = JSON.parse(localStorage.getItem('user') || '{}');
-            if(user.id === 'admin' && user.name == '관리자' && user.email == 'admin@admin') {
-                fetchUsers();
-            } else {
+            const accessToken = localStorage.getItem('user');
+
+            if(!accessToken) {
                 SwalAlertCallBack('error', '관리자만 접근 가능합니다.', '로그인 페이지로 이동합니다.', () => {
                     navigate('/')
                 });
+                return;
+            } else {
+                const payload = parseJwt(accessToken);
+                if(!payload) {
+                    SwalAlertCallBack('error', '관리자만 접근 가능합니다.', '로그인 페이지로 이동합니다.', () => {
+                        navigate('/')
+                    });
+                    return;
+                }
+
+
+                if(payload.scope === 'ROLE_ADMIN') {
+                    fetchUsers();
+                } else {
+                    SwalAlertCallBack('error', '관리자만 접근 가능합니다.', '로그인 페이지로 이동합니다.', () => {
+                        navigate('/')
+                    });
+                }
             }
         } else {
             SwalAlertCallBack('error', '관리자만 접근 가능합니다.', '로그인 페이지로 이동합니다.', () => {
@@ -104,7 +139,7 @@ function AdminUsers() {
                                 <TableCell component="th" scope="row">
                                     {user.id}
                                 </TableCell>
-                                <TableCell align="right">{user.name}</TableCell>
+                                <TableCell align="right">{user.username}</TableCell>
                                 <TableCell align="right">{user.email}</TableCell>
                                 <TableCell align="right">{user.phone}</TableCell>
                                 <TableCell align="right">{user.occupation}</TableCell>

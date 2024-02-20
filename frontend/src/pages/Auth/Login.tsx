@@ -45,7 +45,7 @@ function Login() {
                 if (response.data.success) {
                     // TODO: redux로 변경
                     // 회원 정보를 localStorage에 저장
-                    localStorage.setItem('user', JSON.stringify(response.data.user));
+                    localStorage.setItem('user', response.data.accessToken);
 
                     // 로그인 성공 CallBack redirection 알림창
                     SwalAlertCallBack('success', '로그인 성공', '로그인이 완료되었습니다.', () => {

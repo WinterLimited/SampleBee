@@ -51,22 +51,24 @@ export class AuthService {
         const { email, password } = authCredentialsDto;
         const user = await this.userRepository.findOneBy({ email });
 
-        if(user && (await bcrypt.compare(password, user.password))) {
+        if (user && (await bcrypt.compare(password, user.password))) {
             const payload = {
                 iss: 'SampleBee',
                 sub: user.id,
-                scope: user.role
+                scope: user.role,
             };
-            const accessToken = await this.jwtService.sign(payload);
-
-            return { accessToken };
-        }  else {
-            throw new UnauthorizedException('로그인 실패');
+            // 바로 accessToken 문자열을 반환
+            const accessToken = this.jwtService.sign(payload);
+            return { accessToken }; // 여기서는 accessToken 문자열을 직접 반환합니다.
+        } else {
+            throw new UnauthorizedException('로그인 정보가 유효하지 않습니다.');
         }
     }
 
+
     // GET /auth/check-email
     async checkEmail(email: string): Promise<boolean> {
+
         const user = await this.userRepository.findOneBy({ email });
         return !!user;
     }

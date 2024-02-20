@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+
+// import axios
+import axios from "../../api/axiosConfig";
+
 import { Bar } from 'react-chartjs-2';
 import { Chart, registerables } from 'chart.js';
 import {SwalAlertCallBack} from "../../components/Common/SwalAlert";
@@ -7,10 +10,13 @@ import {Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, Tabl
 import {useNavigate} from "react-router-dom";
 Chart.register(...registerables);
 
+
 // 방문 기록 타입 정의
 interface Visit {
     id: number;
-    visit_time: string;
+    createdAt: string;
+    pageUrl: string;
+    userAgent: string;
 }
 
 // 차트 데이터 구조를 위한 인터페이스
@@ -33,9 +39,9 @@ function AdminVisits() {
 
     const fetchVisits = async () => {
         try {
-            const response = await axios.get('/api/admin/visit');
-            setVisits(response.data.visits);
-            const data: ChartData = processVisitData(response.data.visits);
+            const response = await axios.get('/api/admin/visits');
+            setVisits(response.data.data);
+            const data: ChartData = processVisitData(response.data.data);
             setVisitData(data);
             setLoading(false);
         } catch (error) {
@@ -44,23 +50,47 @@ function AdminVisits() {
         }
     };
 
+    function parseJwt(token: string) {
+        try {
+            const base64Url = token.split('.')[1];
+            const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+            const jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
+                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+            }).join(''));
+
+            return JSON.parse(jsonPayload);
+        } catch (e) {
+            console.error('JWT 디코드 중 오류 발생:', e);
+            return null;
+        }
+    }
+
     useEffect(() => {
 
-        // 관리자 여부 확인
-        // TODO: redux로 변경
-        if (localStorage.getItem('user')) {
-            const user = JSON.parse(localStorage.getItem('user') || '{}');
-            if(user.id === 'admin' && user.name == '관리자' && user.email == 'admin@admin') {
+        const accessToken = localStorage.getItem('user');
+
+        if(!accessToken) {
+            SwalAlertCallBack('error', '관리자만 접근 가능합니다.', '로그인 페이지로 이동합니다.', () => {
+                navigate('/')
+            });
+            return;
+        } else {
+            const payload = parseJwt(accessToken);
+            if(!payload) {
+                SwalAlertCallBack('error', '관리자만 접근 가능합니다.', '로그인 페이지로 이동합니다.', () => {
+                    navigate('/')
+                });
+                return;
+            }
+
+
+            if(payload.scope === 'ROLE_ADMIN') {
                 fetchVisits();
             } else {
                 SwalAlertCallBack('error', '관리자만 접근 가능합니다.', '로그인 페이지로 이동합니다.', () => {
                     navigate('/')
                 });
             }
-        } else {
-            SwalAlertCallBack('error', '관리자만 접근 가능합니다.', '로그인 페이지로 이동합니다.', () => {
-                navigate('/')
-            });
         }
     }, []);
 
@@ -69,7 +99,7 @@ function AdminVisits() {
         const visitCounts: Record<string, number> = {};
 
         visits.forEach(visit => {
-            const date = new Date(visit.visit_time).toLocaleDateString();
+            const date = new Date(visit.createdAt).toLocaleDateString();
             visitCounts[date] = (visitCounts[date] || 0) + 1;
         });
 
@@ -119,27 +149,29 @@ function AdminVisits() {
             <Bar data={visitData} />
 
             {/* 테이블 추가 */}
-            <TableContainer component={Paper} sx={{ mt: 4, maxWidth: 700 }}>
+            <TableContainer component={Paper} sx={{ mt: 4, maxWidth: 1200 }}>
                 <Table aria-label="방문 기록 테이블">
                     <TableHead>
                         {/* 총 방문자 수를 표시하는 행 추가 */}
                         <TableRow>
-                            <TableCell colSpan={2}>
+                            <TableCell colSpan={3}>
                                 총 방문자 수: {visits.length}
                             </TableCell>
                         </TableRow>
                         <TableRow>
                             <TableCell>ID</TableCell>
+                            <TableCell align="center">접속기기</TableCell>
                             <TableCell align="right">방문 시간</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {visits.map((visit) => (
+                        {visits && visits.map((visit) => (
                             <TableRow key={visit.id}>
                                 <TableCell component="th" scope="row">
                                     {visit.id}
                                 </TableCell>
-                                <TableCell align="right">{new Date(visit.visit_time).toLocaleString()}</TableCell>
+                                <TableCell align="center">{visit.userAgent}</TableCell>
+                                <TableCell align="right">{visit.createdAt.substring(0, 10)}</TableCell>
                             </TableRow>
                         ))}
                     </TableBody>

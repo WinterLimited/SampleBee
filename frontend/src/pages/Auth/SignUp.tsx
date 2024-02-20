@@ -50,7 +50,7 @@ function SignUp() {
         if (emailRegex.test(email) && email.length >= 6) {
             try {
                 const response = await axios.get(`/api/auth/check-email/${email}`);
-                if (!response.data) {
+                if (response.data.success) {
                     setCheck(true);
                 } else {
                     setCheck(false);
