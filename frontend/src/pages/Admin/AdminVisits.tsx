@@ -171,7 +171,9 @@ function AdminVisits() {
                                     {visit.id}
                                 </TableCell>
                                 <TableCell align="center">{visit.userAgent}</TableCell>
-                                <TableCell align="right">{visit.createdAt.substring(0, 10)}</TableCell>
+                                <TableCell align="right">{
+                                    new Date(visit.createdAt).toLocaleString()
+                                }</TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
