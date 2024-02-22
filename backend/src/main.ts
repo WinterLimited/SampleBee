@@ -9,9 +9,10 @@ async function bootstrap() {
   app.setGlobalPrefix('api');
 
   // CORS 설정
-  app.enableCors({
-    origin: process.env.CORS_ORIGIN,
-  });
+  // app.enableCors({
+  //   origin: process.env.CORS_ORIGIN,
+  // });
+  app.enableCors();
 
   await app.listen(process.env.PORT || 3000);
 }
