@@ -16,10 +16,10 @@ const AskUs: React.FC = () => {
                 }}
             >
                 <Typography variant="h5" component="h2" color={'rgb(41, 41, 46)'} fontWeight={'bold'} gutterBottom>
-                    챗봇 상담 서비스
+                    샘플비 상담 전문 AI
                 </Typography>
                 <Typography variant="body1" color={'rgb(41, 41, 46)'} paragraph>
-                    언제든지 궁금한 점을 물어보세요! 저희 챗봇이 빠르게 답변해 드릴게요.
+                    샘플비 상담 전문 AI를 통해 견적 및 상담을 받아보세요.
                 </Typography>
                 <Box
                     sx={{

@@ -93,20 +93,20 @@ function Footer() {
                         </Box>
 
                         {/* 대표자 정보 */}
-                        <Box
-                            sx={{
-                                display: 'flex',
-                                flexDirection: 'column',
-                                alignItems: 'flex-end',
-                                color: 'white',
-                                paddingRight: '20px',
-                            }}
-                        >
-                            <Typography variant="body1" sx={{ lineHeight: 1.5 }}>
-                                한살터울(한양대학교 창업교육센터 소속)<br />
-                                전화번호: 010-5503-8718
-                            </Typography>
-                        </Box>
+                        {/*<Box*/}
+                        {/*    sx={{*/}
+                        {/*        display: 'flex',*/}
+                        {/*        flexDirection: 'column',*/}
+                        {/*        alignItems: 'flex-end',*/}
+                        {/*        color: 'white',*/}
+                        {/*        paddingRight: '20px',*/}
+                        {/*    }}*/}
+                        {/*>*/}
+                        {/*    <Typography variant="body1" sx={{ lineHeight: 1.5 }}>*/}
+                        {/*        한살터울(한양대학교 창업교육센터 소속)<br />*/}
+                        {/*        전화번호: 010-5503-8718*/}
+                        {/*    </Typography>*/}
+                        {/*</Box>*/}
 
                         {/* 링크 */}
                         <Box sx={{ display: 'flex', alignItems: 'center' }}>

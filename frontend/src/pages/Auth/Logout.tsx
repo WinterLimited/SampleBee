@@ -10,8 +10,10 @@ function Logout() {
         SwalAlertCallBack('success', '로그아웃', '로그아웃 되었습니다.', () => {
             // 로그아웃 시 localStorage에 저장된 user 삭제
             localStorage.removeItem('user');
-            // 메인 페이지로 리디렉션
-            navigate('/');
+
+            // TODO: redux로 변경하면 navigate 사용
+            // navigate('/');
+            window.location.href = '/';
         });
     }, []);
 

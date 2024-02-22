@@ -11,7 +11,7 @@ export class ChatService {
                 return;
             }
 
-            const pythonProcess = spawn('python', [pythonScriptPath, question]);
+            const pythonProcess = spawn('python3', [pythonScriptPath, question]);
 
             let result = '';
             pythonProcess.stdout.on('data', (data) => {

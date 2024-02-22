@@ -49,7 +49,9 @@ function Login() {
 
                     // 로그인 성공 CallBack redirection 알림창
                     SwalAlertCallBack('success', '로그인 성공', '로그인이 완료되었습니다.', () => {
-                        navigate('/');
+                        // TODO: redux로 변경하면 navigate 사용
+                        // navigate('/');
+                        window.location.href = '/';
                     });
                 } else {
                     SwalAlert('error', '로그인 실패', '아이디 또는 비밀번호를 확인해주세요.');
