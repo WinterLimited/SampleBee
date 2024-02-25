@@ -1,18 +1,13 @@
-#@title (파인콘 불러오고 질문하기- 따로 계속 PDF저장 필요 X)
-import warnings
-
-# 특정 경고 무시
-warnings.filterwarnings("ignore")
-
 from dotenv import load_dotenv
 import sys
 
-from langchain.vectorstores import Chroma
-from langchain.embeddings.openai import OpenAIEmbeddings
+from langchain_community.vectorstores import Chroma
+# from langchain_community.embeddings.openai import OpenAIEmbeddings
+# from langchain_community.chat_models import ChatOpenAI
+from langchain_openai import OpenAIEmbeddings, ChatOpenAI
 import pinecone as pc
-from langchain.vectorstores import Pinecone as PineconeVectorStore
-from langchain.llms import OpenAI
-from langchain.chat_models import ChatOpenAI
+from langchain_community.vectorstores import Pinecone as PineconeVectorStore
+from langchain_openai import OpenAI
 from langchain.chains.question_answering import load_qa_chain
 
 #
@@ -49,8 +44,13 @@ chain = load_qa_chain(llm, chain_type="stuff")
 #
 docs = docsearch.similarity_search(query)   # 유사성 높은 벡터 자료 모으기
 
+input_data = {
+    "input_documents": docs,  # 유사성 높은 벡터 자료
+    "question": query,  # 사용자 질문
+}
+
 # OPENAI & 유사성 높은 벡터 자료
-ans = chain.run(input_documents=docs, question=query)
+ans = chain.invoke(input_data)
 
 #
-print(ans)
+print(ans['output_text'])
