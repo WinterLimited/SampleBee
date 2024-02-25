@@ -37,9 +37,7 @@ const ChatBox: React.FC = () => {
 
         try {
             // 백엔드에 메시지 전송
-            const response = await axios.post('/api/chat/message', {
-                message: text,
-            });
+            const response = await axios.post('/api/chat/message', { message: text }, { timeout: 20000 });
             const botResponse: Message = {
                 id: Date.now(),
                 text: response.data.response, // 백엔드에서 처리된 응답 사용
