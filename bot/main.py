@@ -1,4 +1,9 @@
 #@title (파인콘 불러오고 질문하기- 따로 계속 PDF저장 필요 X)
+import warnings
+
+# 특정 경고 무시
+warnings.filterwarnings("ignore")
+
 from dotenv import load_dotenv
 import sys
 

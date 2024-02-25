@@ -12,28 +12,28 @@ export class ChatService {
             }
 
             const pythonProcess = spawn('python3', [pythonScriptPath, question]);
-
             let result = '';
+
             pythonProcess.stdout.on('data', (data) => {
                 result += data.toString();
             });
 
+            let errorOutput = '';
             pythonProcess.stderr.on('data', (data) => {
-                reject(`Python 스크립트 실행 중 오류 발생: ${data.toString()}`);
+                errorOutput += data.toString();
             });
 
             pythonProcess.on('close', (code) => {
                 if (code === 0) {
-                    try {
-                        const parsedResult = JSON.parse(result);
-                        // JSON 구조에 따라 접근
-                        const content = parsedResult.response.content;
-                        resolve(content); // 여기서는 추가 변환 없이 content를 반환
-                    } catch (error) {
-                        reject(`결과 파싱 중 오류 발생: ${error.toString()}`);
-                    }
+                    resolve(result);
                 } else {
-                    reject(`파이썬 스크립트 종료 코드: ${code}`);
+                    // 필터링 로직을 추가하여 특정 경고를 무시
+                    const filteredErrors = errorOutput.split('\n').filter(line => !line.includes('LangChainDeprecationWarning'));
+                    if (filteredErrors.length > 0) {
+                        reject(`Python 스크립트 실행 중 오류 발생: ${filteredErrors.join('\n')}`);
+                    } else {
+                        resolve(result);
+                    }
                 }
             });
         });
