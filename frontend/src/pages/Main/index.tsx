@@ -65,11 +65,11 @@ function Main() {
                     padding: '0 10%', // 왼쪽 여백 추가
                 }}
             >
-                <Typography variant="h3" component="h1" sx={{ mb: 1, color: 'rgb(41, 41, 46)', fontWeight: 'bold' }}>
+                <Typography variant="h2" component="h1" sx={{ mb: 1, color: 'rgb(41, 41, 46)', fontWeight: 'bold' }}>
                     빠르고 정확하게 <br />
                     비교할 수 있도록,
                 </Typography>
-                <Typography variant="h6" component="h5" sx={{ mb: 4, color: 'rgb(114, 114, 114)', fontSize: '15px' }}>
+                <Typography variant="h5" component="h5" sx={{ mb: 4, color: 'rgb(114, 114, 114)', fontSize: '15px' }}>
                     샘플비로 빠르고 정확하게 비교해보세요.
                 </Typography>
 
