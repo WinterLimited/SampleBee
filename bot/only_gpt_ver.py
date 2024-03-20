@@ -18,7 +18,7 @@ question = sys.argv[1] if len(sys.argv) > 1 else "질문이 제공되지 않았�
 openai_api_key = os.getenv('OPENAI_API_KEY')
 
 chat_check = ChatOpenAI(model_name='gpt-3.5-turbo', temperature=0.9, openai_api_key=openai_api_key)
-ch_sys1 = SystemMessage(content="당신은 인테리어 자재와 제조업체에 대해서 설명해주는 샘플비 플랫폼의 대화 및 상담형 전문 AI입니다. 당신의 이름은 샘플비 Student입니다.")
+ch_sys1 = SystemMessage(content="시스템 메시지를 입력하세요. 구체적으로 Gpt-3.5-turbo 모델이 수행해야 하는 역할을 적어주세요.")
 ch_msg1 = HumanMessage(content=question)
 ch_ans1 = chat_check.invoke([ch_sys1, ch_msg1])
 
